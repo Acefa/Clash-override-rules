@@ -170,6 +170,20 @@ proxy-groups:
       - 手动切换
       - DIRECT
 
+  - name: X平台
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 美国节点
+      - 日本节点
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
   - name: OpenAi
     type: select
     proxies:
@@ -587,6 +601,14 @@ rule-providers:
     path: ./ruleset/telegram.mrs
     interval: 172800
 
+  Twitter:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs"
+    path: ./ruleset/twitter.mrs
+    interval: 172800
+
   OpenAi:
     type: http
     behavior: domain
@@ -723,6 +745,7 @@ rules:
   - RULE-SET,GoogleFCM,谷歌FCM
   - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Telegram,电报消息
+  - RULE-SET,Twitter,X平台
   - RULE-SET,YouTube,油管视频
   - RULE-SET,AI-MIX,AI-UNHK
   - RULE-SET,OpenAi,OpenAi
