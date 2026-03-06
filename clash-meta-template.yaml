@@ -14,8 +14,7 @@ proxy-providers:
     proxy: DIRECT
 
 # 节点信息
-proxies:
-  - {name: DIRECT, type: direct}
+proxies: []
 
 # 全局配置
 mixed-port: 7890
