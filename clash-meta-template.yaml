@@ -139,6 +139,8 @@ dns:
   fallback-filter:
     geoip: true
     geoip-code: CN
+    geosite:
+      - gfw
     ipcidr:
       - 240.0.0.0/4
       - 0.0.0.0/32
