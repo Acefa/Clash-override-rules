@@ -81,7 +81,7 @@ tun:
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
-  strict-route: false
+  strict-route: true
   route-exclude-address:
     - 192.168.0.0/16
     - 10.0.0.0/8
@@ -104,12 +104,25 @@ dns:
     - "+.msftncsi.com"
     - "time.*.com"
     - "ntp.*.com"
-    # 仅保留关键金融域名（兼容性）
+    - "+.cn"  # 所有.cn域名
+    - "+.baidu.com"
+    - "+.taobao.com"
+    - "+.tmall.com"
+    - "+.alipay.com"
+    - "+.jd.com"
+    - "+.qq.com"
+    - "+.weixin.qq.com"
+    - "+.163.com"
+    - "+.126.com"
+    - "+.sina.com.cn"
+    - "+.bilibili.com"
+    - "+.douyin.com"
+    - "+.xiaomi.com"
+    - "+.mi.com"
     - "+.icbc.com.cn"
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
-    - "+.alipay.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29  # 移除 8.8.8.8，避免污染
@@ -117,9 +130,9 @@ dns:
     - https://223.5.5.5/dns-query
     - https://doh.pub/dns-query
   nameserver:
-    - 223.5.5.5  # UDP，速度最快
-    - 119.29.29.29  # UDP备用
-    - https://doh.pub/dns-query  # DoH备用（安全）
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
   fallback:
     - https://1.1.1.1/dns-query
     - https://8.8.8.8/dns-query  # 仅在 fallback 中使用

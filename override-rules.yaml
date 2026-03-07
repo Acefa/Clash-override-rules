@@ -68,7 +68,7 @@ tun:
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
-  strict-route: false  # 兼容性：避免路由冲突
+  strict-route: true  # 强制路由：确保所有流量走TUN
   route-exclude-address:
     - 192.168.0.0/16
     - 10.0.0.0/8
