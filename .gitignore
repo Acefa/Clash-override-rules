@@ -1,0 +1,25 @@
+# 包含私密信息的配置文件
+*-ready.yaml
+*-ready.yml
+config-ready.*
+
+# 包含订阅地址/密钥的文件
+*subscription*
+*secret*
+*key*
+*token*
+*password*
+
+# 个人配置文件
+dns-optimized.yaml
+dns-optimized.yml
+
+# 工具目录
+.claude/
+.spec-workflow/
+unpublished/
+
+# 临时文件
+*.tmp
+*.bak
+temp-*
