@@ -108,7 +108,16 @@ dns:
     - 119.29.29.29  # UDP备用
     - https://doh.pub/dns-query  # DoH备用（安全）
   nameserver-policy:
+    # 国际服务 - 直接走国外DNS（防泄露）
+    'geosite:geolocation-!cn': [8.8.8.8, 1.1.1.1]
     'geosite:gfw': [8.8.8.8, 1.1.1.1]
+    # 常用服务 - 明确指定（双重保险）
+    'geosite:google': [8.8.8.8, 8.8.4.4]
+    'geosite:youtube': [8.8.8.8, 8.8.4.4]
+    'geosite:twitter': [1.1.1.1, 1.0.0.1]
+    'geosite:github': [1.1.1.1, 1.0.0.1]
+    'geosite:telegram': [1.1.1.1, 1.0.0.1]
+    # 国内服务 - 走国内DNS（保持速度）
     'geosite:cn': [223.5.5.5, 119.29.29.29]
   fallback:
     - 8.8.8.8  # 改用 UDP，避免 DoH 循环依赖
