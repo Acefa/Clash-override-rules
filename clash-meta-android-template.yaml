@@ -47,17 +47,46 @@ sniffer:
   override-destination: false
   sniff:
     HTTP:
-      ports: [80, 8080-8880]
+      ports: [80, 8080-8090]  # 缩小范围，避免误嗅探移动应用
       override-destination: false
     TLS:
       ports: [443, 8443]
     QUIC:
       ports: [443, 8443]
+
+  # 强制嗅探（CDN/反代网站）
   force-domain:
     - "+.v2ex.com"
+    - "+.github.io"
+    - "+.cloudflare.com"
+
+  # 跳过嗅探（移动应用兼容性）
   skip-domain:
     - "+.baidu.com"
     - "+.push.apple.com"
+    - "+.apple.com"
+    # 移动支付
+    - "+.alipay.com"
+    - "+.alipayobjects.com"
+    # 微信
+    - "+.wechat.com"
+    - "+.weixin.qq.com"
+    - "+.qq.com"
+    # 银行应用
+    - "+.icbc.com.cn"
+    - "+.ccb.com.cn"
+    - "+.boc.cn"
+    - "+.abchina.com"
+    # 移动游戏
+    - "+.mihoyo.com"
+    - "+.yuanshen.com"
+    - "+.starrails.com"
+    - "+.tencent.com"
+    - "+.wegame.com.cn"
+    # 智能家居
+    - "Mijia Cloud"
+    - "+.mi.com"
+    - "+.xiaomi.com"
   skip-dst-address:
     - 91.105.192.0/23
     - 91.108.4.0/22
