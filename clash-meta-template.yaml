@@ -98,13 +98,31 @@ dns:
   fake-ip-range: 198.18.0.0/16
   fake-ip-filter-mode: blacklist
   fake-ip-filter:
-    - "rule-set:private_domain,cn_domain,bank_cn_domain,ai_cn_domain,xiaomi_domain,media_cn_domain,apple_cn_domain,steam_cn_domain"
     - "+.lan"
     - "+.local"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
     - "time.*.com"
     - "ntp.*.com"
+    - "+.cn"  # 所有.cn域名
+    - "+.baidu.com"
+    - "+.taobao.com"
+    - "+.tmall.com"
+    - "+.alipay.com"
+    - "+.jd.com"
+    - "+.qq.com"
+    - "+.weixin.qq.com"
+    - "+.163.com"
+    - "+.126.com"
+    - "+.sina.com.cn"
+    - "+.bilibili.com"
+    - "+.douyin.com"
+    - "+.xiaomi.com"
+    - "+.mi.com"
+    - "+.icbc.com.cn"
+    - "+.ccb.com.cn"
+    - "+.boc.cn"
+    - "+.abchina.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29  # 移除 8.8.8.8，避免污染
