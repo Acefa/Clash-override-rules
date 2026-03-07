@@ -194,7 +194,7 @@ proxy-groups:
   - name: 谷歌FCM
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
-    proxies: [DIRECT, 节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换]
+    proxies: [节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]  # 防泄漏：默认走代理
 
   - name: 微软Bing
     type: select
