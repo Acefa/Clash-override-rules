@@ -536,62 +536,6 @@ rule-providers:
     interval: 172800
     format: mrs
 
-  cn_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"
-    path: ./ruleset/cn_domain.mrs
-    interval: 172800
-    format: mrs
-
-  bank_cn_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-bank-cn.mrs"
-    path: ./ruleset/bank_cn_domain.mrs
-    interval: 172800
-    format: mrs
-
-  ai_cn_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-ai-cn.mrs"
-    path: ./ruleset/ai_cn_domain.mrs
-    interval: 172800
-    format: mrs
-
-  xiaomi_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/xiaomi.mrs"
-    path: ./ruleset/xiaomi_domain.mrs
-    interval: 172800
-    format: mrs
-
-  media_cn_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-media-cn.mrs"
-    path: ./ruleset/media_cn_domain.mrs
-    interval: 172800
-    format: mrs
-
-  apple_cn_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs"
-    path: ./ruleset/apple_cn_domain.mrs
-    interval: 172800
-    format: mrs
-
-  steam_cn_domain:
-    type: http
-    behavior: domain
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/steam@cn.mrs"
-    path: ./ruleset/steam_cn_domain.mrs
-    interval: 172800
-    format: mrs
-
   LocalAreaNetwork:
     type: http
     behavior: classical
@@ -826,6 +770,7 @@ rules:
   - IP-CIDR6,fd00::/8,DIRECT,no-resolve
   - RULE-SET,BanAD,广告拦截
   - RULE-SET,BanProgramAD,应用净化
+  - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
   - RULE-SET,GoogleFCM,谷歌FCM
