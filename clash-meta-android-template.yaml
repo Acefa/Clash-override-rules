@@ -642,6 +642,14 @@ rule-providers:
     path: ./ruleset/google.mrs
     interval: 172800
 
+  GitHub:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
+    path: ./ruleset/github.mrs
+    interval: 172800
+
   SteamCN:
     type: http
     behavior: classical
@@ -823,6 +831,7 @@ rules:
   - RULE-SET,GoogleFCM,谷歌FCM
   - RULE-SET,Google,Google
   - RULE-SET,GoogleCN,全球直连
+  - RULE-SET,GitHub,节点选择
   - RULE-SET,Telegram,电报消息
   - RULE-SET,Twitter,X平台
   - RULE-SET,YouTube,油管视频
@@ -842,9 +851,9 @@ rules:
   - RULE-SET,ProxyMedia,国外媒体
   - RULE-SET,ProxyGFWlist,节点选择
   - RULE-SET,ChinaDomain,全球直连
-  - RULE-SET,ChinaCompanyIp,全球直连
+  - RULE-SET,ChinaCompanyIp,全球直连,no-resolve
   - RULE-SET,Download,全球直连
-  - GEOIP,CN,全球直连
+  - GEOIP,CN,全球直连,no-resolve
   - MATCH,漏网之鱼
 
 # GEO 数据自动更新
