@@ -134,8 +134,8 @@ dns:
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
   fallback:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query  # 仅在 fallback 中使用
+    - 8.8.8.8
+    - 1.1.1.1  # 仅在 fallback 中使用
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -683,8 +683,8 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
   - RULE-SET,GoogleFCM,谷歌FCM
-  - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Google,谷歌搜索
+  - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Telegram,电报消息
   - RULE-SET,Twitter,X平台
   - RULE-SET,YouTube,油管视频

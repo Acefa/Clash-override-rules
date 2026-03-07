@@ -108,14 +108,14 @@ dns:
     - 119.29.29.29  # UDP备用
     - https://doh.pub/dns-query  # DoH备用（安全）
   fallback:
-    - https://1.1.1.1/dns-query  # 性能：Cloudflare 更快
-    - https://8.8.8.8/dns-query
+    - 8.8.8.8  # 改用 UDP，避免 DoH 循环依赖
+    - 1.1.1.1
   fallback-filter:
     geoip: true
     geoip-code: CN
     ipcidr:
       - 240.0.0.0/4
-      - 0.0.0.0/32  # 新增：过滤无效 IP
+      - 0.0.0.0/32
 
 # 代理组配置（性能优化）
 proxy-groups:
@@ -657,8 +657,8 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
   - RULE-SET,GoogleFCM,谷歌FCM
-  - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Google,谷歌搜索
+  - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Telegram,电报消息
   - RULE-SET,Twitter,X平台
   - RULE-SET,YouTube,油管视频

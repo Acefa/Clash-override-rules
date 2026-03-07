@@ -65,6 +65,15 @@ sniffer:
     - "+.baidu.com"
     - "+.push.apple.com"
     - "+.apple.com"
+    # Google Play（关键）
+    - "+.play.googleapis.com"
+    - "+.android.clients.google.com"
+    - "+.play.google.com"
+    - "+.update.googleapis.com"
+    - "dl.google.com"
+    - "dl-ssl.google.com"
+    - "+.gvt1.com"
+    - "+.ggpht.com"
     # 移动支付
     - "+.alipay.com"
     - "+.alipayobjects.com"
@@ -146,6 +155,13 @@ dns:
     # Android 系统服务
     - "+.google.cn"
     - "+.googleapis.cn"
+    # Google Play 服务（关键）
+    - "+.play.googleapis.com"
+    - "+.android.clients.google.com"
+    - "+.play.google.com"
+    - "+.update.googleapis.com"
+    - "dl.google.com"
+    - "dl-ssl.google.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -157,8 +173,8 @@ dns:
     - 119.29.29.29  # UDP备用
     - https://doh.pub/dns-query  # DoH备用（安全）
   fallback:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
+    - 8.8.8.8
+    - 1.1.1.1
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -316,15 +332,29 @@ proxy-groups:
   - name: 谷歌FCM
     type: select
     proxies:
-      - DIRECT
-      - 节点选择
-      - 美国节点
-      - 台湾节点
-      - 狮城节点
-      - 日本节点
-      - 韩国节点
       - 香港节点
+      - 狮城节点
+      - 节点选择
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
       - 手动切换
+      - DIRECT
+
+  - name: Google
+    type: select
+    proxies:
+      - 香港节点
+      - 狮城节点
+      - 节点选择
+      - 自动选择
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
 
   - name: 微软云盘
     type: select
@@ -480,6 +510,7 @@ proxy-groups:
       - 国外媒体
       - 国内媒体
       - 谷歌FCM
+      - Google
       - 微软云盘
       - 苹果服务
       - 游戏平台
@@ -601,6 +632,14 @@ rule-providers:
     behavior: classical
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/GoogleCN.list"
     path: ./ruleset/GoogleCN.list
+    interval: 172800
+
+  Google:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"
+    path: ./ruleset/google.mrs
     interval: 172800
 
   SteamCN:
@@ -782,6 +821,7 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
   - RULE-SET,GoogleFCM,谷歌FCM
+  - RULE-SET,Google,Google
   - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Telegram,电报消息
   - RULE-SET,Twitter,X平台
