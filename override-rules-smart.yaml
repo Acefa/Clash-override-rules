@@ -58,6 +58,8 @@ sniffer:
     - "+.douyin.com"
     - "+.xiaohongshu.com"
     - "+.bilibili.com"
+    - "+.volcengine.com"
+    - "+.bytedance.com"
   skip-dst-address:  # 安全：跳过 Telegram IP 段
     - 91.105.192.0/23
     - 91.108.4.0/22
@@ -651,6 +653,10 @@ rules:
   - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
+
+  # 4. 火山引擎优化（流式语音识别）
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
   
   
   # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
