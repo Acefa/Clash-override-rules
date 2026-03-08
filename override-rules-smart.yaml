@@ -239,44 +239,44 @@ proxy-groups:
   - name: 谷歌FCM
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
-    proxies: [节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 微软Bing
     type: select
     icon: https://testingcf.jsdelivr.net/gh/shindgewongxj/WHATSINStash@master/icon/bing.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 微软云盘
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/OneDrive.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 微软服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png
-    proxies: [节点选择, DIRECT, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [节点选择, Smart选择, DIRECT, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 苹果服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 游戏平台
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Game.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 网易音乐
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netease_Music.png
     include-all: true
     filter: "(?i)网易|音乐|NetEase|Music"
-    proxies: [DIRECT, 节点选择, 自动选择]
+    proxies: [DIRECT, 节点选择, Smart选择, 自动选择]
 
   - name: 全球直连
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Direct.png
-    proxies: [DIRECT, 节点选择, 自动选择]
+    proxies: [DIRECT, 节点选择, Smart选择, 自动选择]
 
   - name: 广告拦截
     type: select
