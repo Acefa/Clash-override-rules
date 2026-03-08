@@ -154,7 +154,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
     include-all: true
     exclude-filter: "(?i)回国|国内|CN-|China-Return"
-    tolerance: 100
+    tolerance: 50
     uselightgbm: true
     collectdata: true
     strategy: sticky-sessions
