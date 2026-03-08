@@ -18,6 +18,7 @@ dns-optimized.yml
 .claude/
 .spec-workflow/
 unpublished/
+未发布/
 
 # 临时文件
 *.tmp
