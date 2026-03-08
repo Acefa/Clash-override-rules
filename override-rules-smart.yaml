@@ -651,6 +651,15 @@ rules:
   - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
+  
+  
+  # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
+  - RULE-SET,GoogleCN,全球直连
+  - RULE-SET,Google,谷歌搜索
+  - RULE-SET,YouTube,油管视频
+  - RULE-SET,Twitter,X平台
+  - RULE-SET,Telegram,电报消息
+  - RULE-SET,GitHub,节点选择
 
   # 4. 高频国内服务（微信、抖音、小红书、B站等）
   - RULE-SET,ChinaDomain,全球直连
@@ -659,13 +668,6 @@ rules:
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
 
-  # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
-  - RULE-SET,GoogleCN,全球直连
-  - RULE-SET,Google,谷歌搜索
-  - RULE-SET,YouTube,油管视频
-  - RULE-SET,Twitter,X平台
-  - RULE-SET,Telegram,电报消息
-  - RULE-SET,GitHub,节点选择
 
   # 6. AI 服务
   - RULE-SET,AI-MIX,AI-UNHK
