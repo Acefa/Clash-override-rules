@@ -152,6 +152,9 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)回国|国内|CN-|China-Return"
     tolerance: 100
+    uselightgbm: true
+    collectdata: true
+    strategy: sticky-sessions
 
   - name: 节点选择
     type: select
