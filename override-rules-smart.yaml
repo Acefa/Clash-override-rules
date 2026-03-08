@@ -151,10 +151,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
     include-all: true
     exclude-filter: "(?i)回国|国内|CN-|China-Return"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 600
     tolerance: 100
-    expected-status: 204
 
   - name: 节点选择
     type: select
