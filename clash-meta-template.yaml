@@ -104,25 +104,12 @@ dns:
     - "+.msftncsi.com"
     - "time.*.com"
     - "ntp.*.com"
-    - "+.cn"  # 所有.cn域名
-    - "+.baidu.com"
-    - "+.taobao.com"
-    - "+.tmall.com"
-    - "+.alipay.com"
-    - "+.jd.com"
-    - "+.qq.com"
-    - "+.weixin.qq.com"
-    - "+.163.com"
-    - "+.126.com"
-    - "+.sina.com.cn"
-    - "+.bilibili.com"
-    - "+.douyin.com"
-    - "+.xiaomi.com"
-    - "+.mi.com"
+    # 仅保留关键金融域名（兼容性）
     - "+.icbc.com.cn"
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
+    - "+.alipay.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29  # 移除 8.8.8.8，避免污染
@@ -130,9 +117,9 @@ dns:
     - https://223.5.5.5/dns-query
     - https://doh.pub/dns-query
   nameserver:
-    - https://223.5.5.5/dns-query
+    - 223.5.5.5
+    - 119.29.29.29
     - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
   nameserver-policy:
     # 国际服务 - 直接走国外DNS（防泄露）
     'geosite:geolocation-!cn': [8.8.8.8, 1.1.1.1]
