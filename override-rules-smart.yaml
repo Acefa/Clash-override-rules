@@ -195,24 +195,16 @@ proxy-groups:
     proxies: [节点选择, Smart选择, 自动选择, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
 
   - name: OpenAi
-    type: smart
+    type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
-    include-all: true
-    exclude-filter: "(?i)回国|国内|CN-|China-Return|港|HK|hk|Hong Kong|HongKong|hongkong"
-    tolerance: 100
-    uselightgbm: true
-    collectdata: true
-    strategy: sticky-sessions
+    proxies: [节点选择, Smart选择, 自动选择, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: AI-UNHK
-    type: smart
+    type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     include-all: true
-    exclude-filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong|回国|国内|CN-|China-Return"
-    tolerance: 100
-    uselightgbm: true
-    collectdata: true
-    strategy: sticky-sessions
+    exclude-filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong"
+    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 油管视频
     type: select
