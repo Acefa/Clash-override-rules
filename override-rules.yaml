@@ -49,6 +49,9 @@ sniffer:
     - "+.douyin.com"
     - "+.xiaohongshu.com"
     - "+.bilibili.com"
+    - "+.volcengine.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
   skip-dst-address:  # 安全：跳过 Telegram IP 段
     - 91.105.192.0/23
     - 91.108.4.0/22
@@ -633,13 +636,12 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
 
-  # 4. 高频国内服务（微信、抖音、小红书、B站等）
-  - RULE-SET,ChinaDomain,全球直连
-  - RULE-SET,BilibiliHMT,哔哩哔哩
-  - RULE-SET,Bilibili,哔哩哔哩
-  - RULE-SET,ChinaMedia,国内媒体
-  - RULE-SET,SteamCN,全球直连
-
+  # 4. 火山引擎优化（流式语音识别）
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  
+  
   # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,GoogleCN,全球直连
   - RULE-SET,Google,谷歌搜索
@@ -648,6 +650,13 @@ rules:
   - RULE-SET,Telegram,电报消息
   - RULE-SET,GitHub,节点选择
 
+  # 4. 高频国内服务（微信、抖音、小红书、B站等）
+  - RULE-SET,ChinaDomain,全球直连
+  - RULE-SET,BilibiliHMT,哔哩哔哩
+  - RULE-SET,Bilibili,哔哩哔哩
+  - RULE-SET,ChinaMedia,国内媒体
+  - RULE-SET,SteamCN,全球直连
+  
   # 6. AI 服务
   - RULE-SET,AI-MIX,AI-UNHK
   - RULE-SET,OpenAi,OpenAi
