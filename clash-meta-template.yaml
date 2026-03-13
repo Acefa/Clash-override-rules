@@ -128,9 +128,10 @@ dns:
     - 119.29.29.29
     - https://doh.pub/dns-query
   nameserver-policy:
+    # 具体域名优化 - 优先匹配
+    '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     # 国内服务 - 走国内DNS（保持速度）
     'geosite:cn': [223.5.5.5, 119.29.29.29]
-    '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     # 国际服务 - DoH 走代理（速度优化）
     'geosite:geolocation-!cn': "https://8.8.8.8/dns-query#节点选择"
     'geosite:gfw': "https://1.1.1.1/dns-query#节点选择"
