@@ -650,7 +650,10 @@ rules:
   - RULE-SET,UnBan,全球直连
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
 
-  # 4. 高频国内服务（微信、抖音、小红书、B站等）
+  # 4. 进程直连规则
+  - PROCESS-NAME,shandianshuo.exe,DIRECT
+
+  # 5. 高频国内服务（微信、抖音、小红书、B站等）
   - RULE-SET,ChinaDomain,全球直连
   - RULE-SET,BilibiliHMT,哔哩哔哩
   - RULE-SET,Bilibili,哔哩哔哩
