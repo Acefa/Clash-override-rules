@@ -66,6 +66,9 @@ sniffer:
     - "+.douyin.com"
     - "+.xiaohongshu.com"
     - "+.bilibili.com"
+    - "+.volcengine.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
     - "+.rjj.cc"
   skip-dst-address:
     - 91.105.192.0/23
@@ -648,10 +651,16 @@ rules:
   - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
-  - DOMAIN-SUFFIX,rjj.cc,DIRECT
+
 
   # 4. 进程直连规则
   - PROCESS-NAME,shandianshuo.exe,DIRECT
+  
+  # 5. 火山引擎优化（流式语音识别）
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,rjj.cc,DIRECT
 
   # 5. 高频国内服务（微信、抖音、小红书、B站等）
   - RULE-SET,ChinaDomain,全球直连
