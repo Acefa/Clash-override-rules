@@ -50,6 +50,7 @@ sniffer:
     - "+.xiaohongshu.com"
     - "+.bilibili.com"
     - "+.volcengine.com"
+    - "+.volces.com"
     - "+.bytedance.com"
     - "+.deepseek.com"
     - "+.rjj.cc"
@@ -120,6 +121,7 @@ dns:
   nameserver-policy:
     # 具体域名优化 - 优先匹配
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
+    '+.volces.com': [223.5.5.5, 119.29.29.29]
     # 国内服务 - 走国内DNS（保持速度）
     'geosite:cn': [223.5.5.5, 119.29.29.29]
     # 国际服务 - DoH 走代理（速度优化）
@@ -644,6 +646,7 @@ rules:
 
   # 5. 火山引擎优化（流式语音识别）
   - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,volces.com,DIRECT
   - DOMAIN-SUFFIX,bytedance.com,DIRECT
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
