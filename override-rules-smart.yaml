@@ -185,7 +185,8 @@ proxy-groups:
     tolerance: 80
     uselightgbm: true
     collectdata: true
-    strategy: sticky-sessions
+    strategy: round-robin
+    # strategy: sticky-sessions
 
   - name: 节点选择
     type: select
