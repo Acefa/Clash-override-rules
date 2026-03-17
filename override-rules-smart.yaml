@@ -178,6 +178,21 @@ dns:
 # 代理组配置（Smart 智能版）
 proxy-groups:
   - name: Smart选择
+    type: select
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
+    proxies: [Smart粘性, Smart轮询]
+
+  - name: Smart粘性
+    type: smart
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
+    include-all: true
+    exclude-filter: "(?i)回国|国内|CN-|China-Return"
+    tolerance: 80
+    uselightgbm: true
+    collectdata: true
+    strategy: sticky-sessions
+
+  - name: Smart轮询
     type: smart
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
     include-all: true
@@ -186,7 +201,6 @@ proxy-groups:
     uselightgbm: true
     collectdata: true
     strategy: round-robin
-    # strategy: sticky-sessions
 
   - name: 节点选择
     type: select
@@ -227,14 +241,14 @@ proxy-groups:
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
     proxies: [节点选择, Smart选择, 自动选择, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
-    
+
   - name: AI-UNHK
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     include-all: true
     exclude-filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong"
     proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
-    
+
   - name: 油管视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/YouTube.png
