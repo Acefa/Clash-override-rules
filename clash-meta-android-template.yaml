@@ -182,6 +182,7 @@ proxy-groups:
     type: select
     proxies:
       - 自动选择
+      - 负载均衡
       - 台湾节点
       - 狮城节点
       - 日本节点
@@ -204,11 +205,21 @@ proxy-groups:
     lazy: true
     expected-status: 204
 
+  - name: 负载均衡
+    type: load-balance
+    strategy: round-robin
+    include-all: true
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    lazy: true
+    expected-status: 204
+
   - name: 电报消息
     type: select
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -223,6 +234,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - 美国节点
       - 日本节点
       - 狮城节点
@@ -237,6 +249,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - AI-UNHK
       - 狮城节点
       - 台湾节点
@@ -254,6 +267,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -267,6 +281,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - 狮城节点
       - 香港节点
       - 台湾节点
@@ -281,6 +296,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - 奈飞节点
       - 狮城节点
       - 香港节点
@@ -304,6 +320,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - 香港节点
       - 台湾节点
       - 狮城节点
@@ -413,6 +430,7 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 负载均衡
       - DIRECT
       - 香港节点
       - 台湾节点
@@ -494,6 +512,7 @@ proxy-groups:
       - 节点选择
       - 手动切换
       - 自动选择
+      - 负载均衡
       - 电报消息
       - X平台
       - OpenAi
