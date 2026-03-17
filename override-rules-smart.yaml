@@ -50,19 +50,13 @@ sniffer:
   force-domain:
     - "+.v2ex.com"
   skip-domain:
-    - "+.baidu.com"
     - "+.push.apple.com"
     - "+.qq.com"
     - "+.wechat.com"
     - "+.weixin.qq.com"
     - "+.douyin.com"
-    - "+.xiaohongshu.com"
-    - "+.bilibili.com"
-    - "+.volcengine.com"
-    - "+.volces.com"
-    - "+.bytedance.com"
-    - "+.deepseek.com"
-    - "+.rjj.cc"
+
+    
   skip-dst-address:  # 安全：跳过 Telegram IP 段
     - 91.105.192.0/23
     - 91.108.4.0/22
@@ -117,6 +111,33 @@ dns:
     - "+.boc.cn"
     - "+.abchina.com"
     - "+.alipay.com"
+    - "+.baidu.com"    
+    - "+.taobao.com"    
+    - "+.tmall.com"    
+    - "+.jd.com"    
+    - "+.qq.com"    
+    - "+.tencent.com"    
+    - "+.weixin.qq.com"    
+    - "+.wechat.com"    
+    - "+.douyin.com"    
+    - "+.xiaohongshu.com"    
+    - "+.bilibili.com"    
+    - "+.163.com"    
+    - "+.netease.com"    
+    - "+.sina.com.cn"    
+    - "+.sohu.com"    
+    - "+.youku.com"    
+    - "+.iqiyi.com"    
+    - "+.zhihu.com"    
+    - "+.csdn.net"    
+    - "+.cnblogs.com"
+    - "+.volcengine.com"
+    - "+.volces.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
+    - "+.rjj.cc"
+    - "+.newcli.com"
+    
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -662,7 +683,6 @@ rules:
 
   # 4. 进程直连规则
   - PROCESS-NAME,shandianshuo.exe,DIRECT
-  - PROCESS-NAME,baidunetdiskhost.exe,DIRECT
 
   # 5. 火山引擎优化（流式语音识别）
   - DOMAIN-SUFFIX,volcengine.com,DIRECT
@@ -670,7 +690,8 @@ rules:
   - DOMAIN-SUFFIX,bytedance.com,DIRECT
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
-  
+  - DOMAIN-SUFFIX,newcli.com,DIRECT
+ 
   
   # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,GoogleCN,全球直连
