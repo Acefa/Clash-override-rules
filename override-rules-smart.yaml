@@ -179,12 +179,12 @@ dns:
 proxy-groups:
   - name: Smart选择
     type: select
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
     proxies: [Smart粘性, Smart轮询]
 
   - name: Smart粘性
     type: smart
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Static.png
     include-all: true
     exclude-filter: "(?i)回国|国内|CN-|China-Return"
     tolerance: 80
@@ -194,7 +194,7 @@ proxy-groups:
 
   - name: Smart轮询
     type: smart
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Rocket.png
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
     include-all: true
     exclude-filter: "(?i)回国|国内|CN-|China-Return"
     tolerance: 80
