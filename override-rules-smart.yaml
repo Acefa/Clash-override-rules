@@ -156,14 +156,6 @@ dns:
     '+.volces.com': [223.5.5.5, 119.29.29.29]
     # 国内服务 - 走国内DNS
     'geosite:cn': [223.5.5.5, 119.29.29.29]
-    # 国际服务 - 明文 DNS 走代理（速度优化）
-    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
-    'geosite:gfw': "1.1.1.1#节点选择"
-    # 常用服务 - 明文 DNS 走代理
-    'geosite:youtube': "8.8.8.8#节点选择"
-    'geosite:twitter': "1.1.1.1#节点选择"
-    'geosite:github': "1.1.1.1#节点选择"
-    'geosite:telegram': "1.1.1.1#节点选择"
   fallback:  # Windows 端保留 fallback，防 DNS 污染
     - 8.8.8.8
     - 1.1.1.1
