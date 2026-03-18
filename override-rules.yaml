@@ -674,6 +674,7 @@ rules:
 
   # 4. 进程直连规则
   - PROCESS-NAME,shandianshuo.exe,DIRECT
+  - PROCESS-NAME,LazyTyper.exe,DIRECT
 
   # 5. 火山引擎优化（流式语音识别）
   - DOMAIN-SUFFIX,volcengine.com,DIRECT
