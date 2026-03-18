@@ -186,7 +186,11 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Static.png
     include-all: true  # 包含所有订阅节点
     exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
+    url: "http://www.gstatic.com/generate_204"  # 测试 URL
+    interval: 600  # 测速间隔（秒）
+    timeout: 5000  # 连接超时时间（毫秒）
     tolerance: 30  # 容差值（毫秒），延迟差小于此值不切换节点
+    lazy: true  # 延迟测速，仅在使用时才测速
     uselightgbm: true  # 使用 LightGBM 机器学习模型
     collectdata: true  # 收集数据用于模型训练
     strategy: sticky-sessions  # 策略：粘性会话，同一目标使用同一节点
@@ -196,7 +200,11 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
     include-all: true  # 包含所有订阅节点
     exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
+    url: "http://www.gstatic.com/generate_204"  # 测试 URL
+    interval: 600  # 测速间隔（秒）
+    timeout: 5000  # 连接超时时间（毫秒）
     tolerance: 30  # 容差值（毫秒）
+    lazy: true  # 延迟测速，仅在使用时才测速
     uselightgbm: true  # 使用 LightGBM 机器学习模型
     collectdata: true  # 收集数据用于模型训练
     strategy: round-robin  # 策略：轮询，请求分散到不同节点
