@@ -2,57 +2,57 @@
 # 网络安全 + 性能优化 + 稳定性增强 + Smart 智能节点选择
 
 # 全局配置优化
-mixed-port: 7890
-allow-lan: false
-bind-address: "127.0.0.1"  # 安全：仅本地访问
-mode: rule
-ipv6: false  # 性能：避免 IPv6 DNS 泄漏
-unified-delay: true
-tcp-concurrent: true
-log-level: info
-find-process-mode: strict
-global-ua: clash.meta
-global-client-fingerprint: random  # 安全：随机指纹更难被识别
-keep-alive-idle: 600
-keep-alive-interval: 15
-disable-keep-alive: false
+mixed-port: 7890  # 混合端口，同时支持 HTTP(S) 和 SOCKS5 协议
+allow-lan: false  # 禁止局域网连接，仅本机可用，提高安全性
+bind-address: "127.0.0.1"  # 绑定到本地回环地址，只允许本机访问
+mode: rule  # 运行模式：rule(规则模式) / global(全局代理) / direct(全局直连)
+ipv6: false  # 关闭 IPv6，避免 DNS 泄漏和兼容性问题
+unified-delay: true  # 统一延迟测试，更准确的节点延迟
+tcp-concurrent: true  # TCP 并发连接，提升多连接场景性能
+log-level: info  # 日志级别：silent/error/warning/info/debug
+find-process-mode: strict  # 进程匹配模式：strict(严格) / off(关闭)
+global-ua: clash.meta  # 全局 User-Agent 标识
+global-client-fingerprint: random  # 客户端指纹：chrome/firefox/safari/ios/android/edge/360/qq/random
+keep-alive-idle: 600  # TCP keep-alive 空闲时间（秒）
+keep-alive-interval: 15  # TCP keep-alive 探测间隔（秒）
+disable-keep-alive: false  # 是否禁用 keep-alive
 
-# Smart 内核配置
+# Smart 内核配置 - 智能节点选择核心功能
 smart-core:
-  uselightgbm: true  # 启用 LightGBM 机器学习模型
-  lgbm-auto-update: false  # 关闭自动更新模型
-  # lgbm-update-interval: 72  # 模型更新间隔（小时）
+  uselightgbm: true  # 启用 LightGBM 机器学习模型，用于智能节点选择
+  lgbm-auto-update: false  # 关闭自动更新模型，避免不必要的网络请求
+  # lgbm-update-interval: 72  # 模型更新间隔（小时），默认72小时
   # lgbm-url: "https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin"  # 模型下载地址
-  collectdata: true  # 启用数据收集
-  sample-rate: 1  # 数据采样率（0-1）
+  collectdata: true  # 启用数据收集，用于训练和优化模型
+  sample-rate: 1  # 数据采样率（0-1），1表示收集所有数据
   smart-collector-size: 100  # Smart 数据收集器大小（MB）
 
 profile:
-  store-selected: true
-  store-fake-ip: true
+  store-selected: true  # 存储选择的节点，重启后自动选择上次使用的节点
+  store-fake-ip: true  # 持久化 fake-ip 映射表
 
 experimental:
-  sniff-tls-sni: true
+  sniff-tls-sni: true  # 嗅探 TLS SNI 域名
 
 # 嗅探配置（Windows 端优化）
 sniffer:
-  enable: true
-  parse-pure-ip: true  # Windows 端保持 true，更好的域名识别
-  force-dns-mapping: true  # Windows 端保持 true，强制域名映射
-  override-destination: false
-  sniff:
+  enable: true  # 启用域名嗅探
+  parse-pure-ip: true  # 解析纯 IP 连接，Windows 端建议开启
+  force-dns-mapping: true  # 强制 DNS 映射，确保域名正确解析
+  override-destination: false  # 不覆盖目标地址
+  sniff:  # 嗅探协议配置
     HTTP:
-      ports: [80, 8080-8090]  # 适度范围，覆盖常用端口
+      ports: [80, 8080-8090]  # HTTP 嗅探端口范围
       override-destination: false
     TLS:
-      ports: [443, 8443]
+      ports: [443, 8443]  # HTTPS/TLS 嗅探端口
     QUIC:
-      ports: [443, 8443]
-  force-domain:
+      ports: [443, 8443]  # QUIC 协议嗅探端口
+  force-domain:  # 强制对这些域名进行嗅探
     - "+.v2ex.com"
     - "+.github.io"
     - "+.cloudflare.com"
-  skip-domain:
+  skip-domain:  # 跳过嗅探的域名（直接使用原始请求）
     # Windows 系统服务
     - "+.microsoft.com"
     - "+.windows.com"
@@ -72,8 +72,8 @@ sniffer:
     - "+.boc.cn"
     - "+.abchina.com"
 
-    
-  skip-dst-address:  # 安全：跳过 Telegram IP 段
+
+  skip-dst-address:  # 跳过嗅探的目标 IP 地址段（Telegram IP 段）
     - 91.105.192.0/23
     - 91.108.4.0/22
     - 91.108.8.0/21
@@ -89,31 +89,31 @@ sniffer:
 
 # TUN 配置（兼容性优化）
 tun:
-  enable: true
-  stack: mixed
-  device: Mihomo
-  mtu: 1500
-  dns-hijack:
-    - "any:53"  # 性能：简化配置
-  auto-route: true
-  auto-redirect: true
-  auto-detect-interface: true
-  strict-route: true  # 强制路由：确保所有流量走TUN
-  route-exclude-address:
-    - 192.168.0.0/16
-    - 10.0.0.0/8
-    - 172.16.0.0/12
-    - 127.0.0.0/8
+  enable: true  # 启用 TUN 模式，接管系统流量
+  stack: mixed  # 协议栈模式：system/gvisor/mixed，mixed 兼容性最好
+  device: Mihomo  # 虚拟网卡名称
+  mtu: 1500  # 最大传输单元
+  dns-hijack:  # DNS 劫持配置
+    - "any:53"  # 劫持所有 53 端口的 DNS 请求
+  auto-route: true  # 自动配置路由表
+  auto-redirect: true  # 自动配置 iptables/nftables 重定向
+  auto-detect-interface: true  # 自动检测出站网卡
+  strict-route: true  # 严格路由模式，确保所有流量都经过 TUN
+  route-exclude-address:  # 排除的路由地址段（不走代理）
+    - 192.168.0.0/16  # C 类私有地址
+    - 10.0.0.0/8  # A 类私有地址
+    - 172.16.0.0/12  # B 类私有地址
+    - 127.0.0.0/8  # 本地回环地址
 
 # DNS 优化配置（防泄漏）
 dns:
-  enable: true
-  listen: 127.0.0.1:1053
-  ipv6: false  # 安全：防止 IPv6 DNS 泄漏
-  respect-rules: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.0/16
-  fake-ip-filter-mode: blacklist
+  enable: true  # 启用 DNS 服务
+  listen: 127.0.0.1:1053  # DNS 监听地址和端口
+  ipv6: false  # 关闭 IPv6 DNS 解析，防止 DNS 泄漏
+  respect-rules: true  # DNS 请求遵守代理规则
+  enhanced-mode: fake-ip  # DNS 增强模式：fake-ip(虚假IP) / redir-host(真实IP)
+  fake-ip-range: 198.18.0.0/16  # fake-ip 地址池范围
+  fake-ip-filter-mode: blacklist  # fake-ip 过滤模式：whitelist(白名单) / blacklist(黑名单)
   fake-ip-filter:
     - "+.lan"
     - "+.local"
@@ -160,7 +160,6 @@ dns:
     'geosite:geolocation-!cn': "8.8.8.8#节点选择"
     'geosite:gfw': "1.1.1.1#节点选择"
     # 常用服务 - 明文 DNS 走代理
-    'geosite:google': "8.8.8.8#节点选择"
     'geosite:youtube': "8.8.8.8#节点选择"
     'geosite:twitter': "1.1.1.1#节点选择"
     'geosite:github': "1.1.1.1#节点选择"
@@ -177,33 +176,33 @@ dns:
 
 # 代理组配置（Smart 智能版）
 proxy-groups:
-  - name: Smart选择
-    type: select
+  - name: Smart选择  # Smart 模式选择器
+    type: select  # 手动选择模式
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
-    proxies: [Smart粘性, Smart轮询]
+    proxies: [Smart粘性, Smart轮询]  # 可选择粘性会话或轮询模式
 
-  - name: Smart粘性
-    type: smart
+  - name: Smart粘性  # Smart 粘性会话模式
+    type: smart  # Smart 智能代理组类型，使用机器学习选择最优节点
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Static.png
-    include-all: true
-    exclude-filter: "(?i)回国|国内|CN-|China-Return"
-    tolerance: 80
-    uselightgbm: true
-    collectdata: true
-    strategy: sticky-sessions
+    include-all: true  # 包含所有订阅节点
+    exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
+    tolerance: 30  # 容差值（毫秒），延迟差小于此值不切换节点
+    uselightgbm: true  # 使用 LightGBM 机器学习模型
+    collectdata: true  # 收集数据用于模型训练
+    strategy: sticky-sessions  # 策略：粘性会话，同一目标使用同一节点
 
-  - name: Smart轮询
-    type: smart
+  - name: Smart轮询  # Smart 轮询模式
+    type: smart  # Smart 智能代理组类型
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
-    include-all: true
-    exclude-filter: "(?i)回国|国内|CN-|China-Return"
-    tolerance: 80
-    uselightgbm: true
-    collectdata: true
-    strategy: round-robin
+    include-all: true  # 包含所有订阅节点
+    exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
+    tolerance: 30  # 容差值（毫秒）
+    uselightgbm: true  # 使用 LightGBM 机器学习模型
+    collectdata: true  # 收集数据用于模型训练
+    strategy: round-robin  # 策略：轮询，请求分散到不同节点
 
   - name: 节点选择
-    type: select
+    type: select  # 手动选择模式
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
     proxies: [Smart选择, 自动选择, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
@@ -213,7 +212,7 @@ proxy-groups:
     include-all: true
 
   - name: 自动选择
-    type: url-test
+    type: url-test  # 自动测速选择延迟最低的节点
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png
     include-all: true
     url: "http://www.gstatic.com/generate_204"
@@ -221,11 +220,6 @@ proxy-groups:
     tolerance: 100
     lazy: true
     expected-status: 204
-
-  - name: 谷歌搜索
-    type: select
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google.png
-    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 电报消息
     type: select
@@ -466,14 +460,6 @@ rule-providers:
     path: ./ruleset/GoogleCN.list
     interval: 172800
 
-  Google:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"
-    path: ./ruleset/google.mrs
-    interval: 172800
-
   GitHub:
     type: http
     behavior: domain
@@ -676,21 +662,21 @@ rule-providers:
 
 # 规则配置（优化顺序：高频服务优先）
 rules:
-  # 1. 局域网（最高优先级）
-  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
-  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
-  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
-  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
-  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
-  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
-  - IP-CIDR,240.0.0.0/4,DIRECT,no-resolve
-  - IP-CIDR6,::1/128,DIRECT,no-resolve
-  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
-  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
-  - IP-CIDR6,fd00::/8,DIRECT,no-resolve
+  # 1. 局域网（最高优先级）- 本地网络直连
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve  # C 类私有地址，no-resolve 表示不解析域名
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve  # A 类私有地址
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve  # B 类私有地址
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve  # 本地回环地址
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve  # 运营商级 NAT
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve  # 组播地址
+  - IP-CIDR,240.0.0.0/4,DIRECT,no-resolve  # 保留地址
+  - IP-CIDR6,::1/128,DIRECT,no-resolve  # IPv6 回环地址
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve  # IPv6 唯一本地地址
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve  # IPv6 链路本地地址
+  - IP-CIDR6,fd00::/8,DIRECT,no-resolve  # IPv6 私有地址
 
   # 2. 广告拦截（减少无效请求）
-  - RULE-SET,BanAD,广告拦截
+  - RULE-SET,BanAD,广告拦截  # RULE-SET 表示使用规则集
   - RULE-SET,BanProgramAD,应用净化
 
   # 3. 基础规则
@@ -698,12 +684,12 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
 
-  # 4. 进程直连规则
-  - PROCESS-NAME,shandianshuo.exe,DIRECT
-  - PROCESS-NAME,LazyTyper.exe,DIRECT
+  # 4. 进程直连规则 - 指定进程的流量直连
+  - PROCESS-NAME,shandianshuo.exe,DIRECT  # 闪电说程序直连
+  - PROCESS-NAME,LazyTyper.exe,DIRECT  # LazyTyper 懒人打字工具
 
-  # 5. 火山引擎优化（流式语音识别）
-  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  # 5. 火山引擎优化（流式语音识别）- 国内服务直连
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT  # DOMAIN-SUFFIX 表示匹配域名后缀
   - DOMAIN-SUFFIX,volces.com,DIRECT
   - DOMAIN-SUFFIX,bytedance.com,DIRECT
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
@@ -712,7 +698,6 @@ rules:
 
   # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,GoogleCN,全球直连
-  - RULE-SET,Google,谷歌搜索
   - RULE-SET,YouTube,油管视频
   - RULE-SET,Twitter,X平台
   - RULE-SET,Telegram,电报消息
@@ -750,14 +735,14 @@ rules:
   - RULE-SET,Download,全球直连
 
   # 9. 兜底规则
-  - GEOIP,CN,全球直连,no-resolve
-  - MATCH,漏网之鱼
+  - GEOIP,CN,全球直连,no-resolve  # GEOIP 匹配中国 IP
+  - MATCH,漏网之鱼  # MATCH 匹配所有未匹配的流量
 
 # GEO 数据自动更新
-geo-auto-update: true
-geo-update-interval: 48
-geodata-mode: true
-geox-url:
+geo-auto-update: true  # 启用 GEO 数据自动更新
+geo-update-interval: 48  # 更新间隔（小时）
+geodata-mode: true  # 使用 GEO 数据模式
+geox-url:  # GEO 数据下载地址
   geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
   geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
   mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"

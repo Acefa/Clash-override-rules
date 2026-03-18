@@ -167,7 +167,6 @@ dns:
     'geosite:geolocation-!cn': "8.8.8.8#节点选择"
     'geosite:gfw': "1.1.1.1#节点选择"
     # 常用服务 - 明文 DNS 走代理
-    'geosite:google': "8.8.8.8#节点选择"
     'geosite:youtube': "8.8.8.8#节点选择"
     'geosite:twitter': "1.1.1.1#节点选择"
     'geosite:github': "1.1.1.1#节点选择"
@@ -353,20 +352,6 @@ proxy-groups:
       - 手动切换
       - DIRECT
 
-  - name: Google
-    type: select
-    proxies:
-      - 香港节点
-      - 狮城节点
-      - 节点选择
-      - 自动选择
-      - 台湾节点
-      - 日本节点
-      - 美国节点
-      - 韩国节点
-      - 手动切换
-      - DIRECT
-
   - name: 微软云盘
     type: select
     proxies:
@@ -523,7 +508,6 @@ proxy-groups:
       - 国外媒体
       - 国内媒体
       - 谷歌FCM
-      - Google
       - 微软云盘
       - 苹果服务
       - 游戏平台
@@ -589,14 +573,6 @@ rule-providers:
     behavior: classical
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/GoogleCN.list"
     path: ./ruleset/GoogleCN.list
-    interval: 172800
-
-  Google:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"
-    path: ./ruleset/google.mrs
     interval: 172800
 
   GitHub:
@@ -799,7 +775,6 @@ rules:
 
   # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,GoogleCN,全球直连
-  - RULE-SET,Google,Google
   - RULE-SET,YouTube,油管视频
   - RULE-SET,Twitter,X平台
   - RULE-SET,Telegram,电报消息
