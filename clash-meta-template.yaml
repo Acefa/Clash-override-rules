@@ -142,30 +142,38 @@ dns:
     - "+.baidu.com"
     - "+.taobao.com"
     - "+.jd.com"
-  default-nameserver:  # 默认 DNS 服务器，用于解析其他 DNS 服务器的域名
-    - 223.5.5.5  # 阿里 DNS
-    - 119.29.29.29  # 腾讯 DNS
-  proxy-server-nameserver:  # 代理服务器域名解析用的 DNS
+  default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  nameserver:  # 主 DNS 服务器
+  proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  nameserver-policy:  # DNS 分流策略，根据域名使用不同的 DNS
-    # 具体域名优化 - 优先匹配
-    '+.rjj.cc': [223.5.5.5, 119.29.29.29]  # 国内域名用国内 DNS
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    # 国际服务 - 明文 DNS 走代理（最快方案）
+    'geosite:google': "8.8.8.8#节点选择"
+    'geosite:youtube': "8.8.8.8#节点选择"
+    'geosite:twitter': "1.1.1.1#节点选择"
+    'geosite:telegram': "1.1.1.1#节点选择"
+    'geosite:github': "1.1.1.1#节点选择"
+    'geosite:gfw': "1.1.1.1#节点选择"
+    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
+    # 具体域名优化
+    '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
-    # 国内服务 - 走国内DNS
-    'geosite:cn': [223.5.5.5, 119.29.29.29]  # 所有国内域名
-  fallback:  # 后备 DNS 服务器，防止 DNS 污染
-    - 8.8.8.8  # Google DNS
-    - 1.1.1.1  # Cloudflare DNS
-  fallback-filter:  # 后备 DNS 过滤器
-    geoip: true  # 启用 GeoIP 过滤
-    geoip-code: CN  # 如果解析结果是国内 IP，则使用 fallback DNS
-    ipcidr:  # 如果解析结果在这些 IP 段内，则使用 fallback DNS
-      - 240.0.0.0/4  # 保留地址
-      - 0.0.0.0/32  # 无效地址
+    # 国内服务
+    'geosite:cn': [223.5.5.5, 119.29.29.29]
+  fallback:
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
 
 # 代理组配置
 proxy-groups:

@@ -144,21 +144,29 @@ dns:
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  proxy-server-nameserver:  # 优化：使用明文 DNS 加快代理服务器解析
+  proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    # 具体域名优化 - 优先匹配
+    # 国际服务 - 明文 DNS 走代理（最快方案）
+    'geosite:google': "8.8.8.8#节点选择"
+    'geosite:youtube': "8.8.8.8#节点选择"
+    'geosite:twitter': "1.1.1.1#节点选择"
+    'geosite:telegram': "1.1.1.1#节点选择"
+    'geosite:github': "1.1.1.1#节点选择"
+    'geosite:gfw': "1.1.1.1#节点选择"
+    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
+    # 具体域名优化
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
-    # 国内服务 - 走国内DNS
+    # 国内服务
     'geosite:cn': [223.5.5.5, 119.29.29.29]
-  fallback:  # Windows 端保留 fallback，防 DNS 污染
-    - 8.8.8.8
-    - 1.1.1.1
+  fallback:
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
   fallback-filter:
     geoip: true
     geoip-code: CN

@@ -130,25 +130,33 @@ dns:
     - "+.baidu.com"
     - "+.taobao.com"
     - "+.jd.com"
-  default-nameserver:  # 默认 DNS 服务器
-    - 223.5.5.5  # 阿里 DNS
-    - 119.29.29.29  # 腾讯 DNS
-  proxy-server-nameserver:  # 代理服务器域名解析用的 DNS
+  default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  nameserver:  # 主 DNS 服务器
+  proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  nameserver-policy:  # DNS 分流策略
-    # 具体域名优化 - 优先匹配
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    # 国际服务 - 明文 DNS 走代理（最快方案）
+    'geosite:google': "8.8.8.8#节点选择"
+    'geosite:youtube': "8.8.8.8#节点选择"
+    'geosite:twitter': "1.1.1.1#节点选择"
+    'geosite:telegram': "1.1.1.1#节点选择"
+    'geosite:github': "1.1.1.1#节点选择"
+    'geosite:gfw': "1.1.1.1#节点选择"
+    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
+    # 具体域名优化
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
-    # 国内服务 - 走国内DNS
+    # 国内服务
     'geosite:cn': [223.5.5.5, 119.29.29.29]
-  fallback:  # 后备 DNS 服务器，防止 DNS 污染
-    - 8.8.8.8
-    - 1.1.1.1
-  fallback-filter:  # 后备 DNS 过滤器
+  fallback:
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
+  fallback-filter:
     geoip: true
     geoip-code: CN
     ipcidr:
