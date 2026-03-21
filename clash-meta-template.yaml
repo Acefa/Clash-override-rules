@@ -88,6 +88,10 @@ sniffer:
     - 95.161.64.0/20
     - 149.154.160.0/20
     - 185.76.151.0/24
+    - 2001:67c:4e8::/48
+    - 2001:b28:f23c::/47
+    - 2001:b28:f23f::/48
+    - 2a0a:f280:203::/48
 
 # TUN 配置
 tun:
@@ -411,10 +415,10 @@ rule-providers:
 
   BanAD:
     type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/BanAD.list"
-    path: ./ruleset/BanAD.list
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs"
+    path: ./ruleset/category-ads-all.mrs
     interval: 172800
 
   BanProgramAD:
@@ -523,10 +527,10 @@ rule-providers:
 
   Origin:
     type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/Origin.list"
-    path: ./ruleset/Origin.list
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"
+    path: ./ruleset/origin.mrs
     interval: 172800
 
   Sony:
@@ -579,10 +583,10 @@ rule-providers:
 
   BilibiliHMT:
     type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/BilibiliHMT.list"
-    path: ./ruleset/BilibiliHMT.list
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"
+    path: ./ruleset/biliintl.mrs
     interval: 172800
 
   Bilibili:
@@ -616,14 +620,6 @@ rule-providers:
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"
     path: ./ruleset/gfw.mrs
     interval: 172800
-
-  ChinaDomain:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/ChinaDomain.list"
-    path: ./ruleset/ChinaDomain.list
-    interval: 86400
 
   ChinaCompanyIp:
     type: http
@@ -679,7 +675,6 @@ rules:
   - DOMAIN-SUFFIX,newcli.com,DIRECT
 
   # 5. 高频国内服务（微信、抖音、小红书、B站等）
-  - RULE-SET,ChinaDomain,全球直连  # 国内域名直连
   - RULE-SET,BilibiliHMT,哔哩哔哩  # B站港澳台内容
   - RULE-SET,Bilibili,哔哩哔哩  # B站主站
   - RULE-SET,ChinaMedia,国内媒体  # 国内媒体平台

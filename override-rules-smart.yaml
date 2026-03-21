@@ -433,10 +433,10 @@ rule-providers:
 
   BanAD:
     type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/BanAD.list"
-    path: ./ruleset/BanAD.list
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs"
+    path: ./ruleset/category-ads-all.mrs
     interval: 172800
 
   BanProgramAD:
@@ -545,10 +545,10 @@ rule-providers:
 
   Origin:
     type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/Origin.list"
-    path: ./ruleset/Origin.list
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"
+    path: ./ruleset/origin.mrs
     interval: 172800
 
   Sony:
@@ -601,10 +601,10 @@ rule-providers:
 
   BilibiliHMT:
     type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/BilibiliHMT.list"
-    path: ./ruleset/BilibiliHMT.list
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"
+    path: ./ruleset/biliintl.mrs
     interval: 172800
 
   Bilibili:
@@ -638,14 +638,6 @@ rule-providers:
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"
     path: ./ruleset/gfw.mrs
     interval: 172800
-
-  ChinaDomain:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/ChinaDomain.list"
-    path: ./ruleset/ChinaDomain.list
-    interval: 86400
 
   ChinaCompanyIp:
     type: http
@@ -707,7 +699,6 @@ rules:
   - RULE-SET,GitHub,节点选择
 
   # 4. 高频国内服务（微信、抖音、小红书、B站等）
-  - RULE-SET,ChinaDomain,全球直连
   - RULE-SET,BilibiliHMT,哔哩哔哩
   - RULE-SET,Bilibili,哔哩哔哩
   - RULE-SET,ChinaMedia,国内媒体

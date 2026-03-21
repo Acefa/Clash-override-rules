@@ -730,13 +730,6 @@ rule-providers:
     path: ./ruleset/gfw.mrs
     interval: 172800
 
-  ChinaDomain:
-    type: http
-    behavior: domain
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/ChinaDomain.list"
-    path: ./ruleset/ChinaDomain.list
-    interval: 86400
-
   ChinaCompanyIp:
     type: http
     behavior: ipcidr
@@ -776,7 +769,6 @@ rules:
   - RULE-SET,UnBan,全球直连
 
   # 4. 高频国内服务（微信、抖音、小红书、B站等）
-  - RULE-SET,ChinaDomain,全球直连
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
 
