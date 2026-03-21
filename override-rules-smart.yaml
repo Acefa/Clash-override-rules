@@ -729,6 +729,7 @@ rules:
   - RULE-SET,Download,全球直连
 
   # 9. 兜底规则
+  - GEOSITE,cn,全球直连  # geosite:cn 域名直连，覆盖百度等国内域名
   - GEOIP,CN,全球直连,no-resolve  # GEOIP 匹配中国 IP
   - MATCH,漏网之鱼  # MATCH 匹配所有未匹配的流量
 
