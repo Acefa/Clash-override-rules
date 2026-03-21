@@ -152,14 +152,9 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    # 国际服务 - 明文 DNS 走代理（最快方案）
-    'geosite:google': "8.8.8.8#节点选择"
-    'geosite:youtube': "8.8.8.8#节点选择"
-    'geosite:twitter': "1.1.1.1#节点选择"
-    'geosite:telegram': "1.1.1.1#节点选择"
-    'geosite:github': "1.1.1.1#节点选择"
-    'geosite:gfw': "1.1.1.1#节点选择"
+    # 国际服务 - 走代理 DNS，防止 DNS 泄漏（geolocation-!cn 已覆盖 google/youtube/twitter 等）
     'geosite:geolocation-!cn': "8.8.8.8#节点选择"
+    'geosite:gfw': "1.1.1.1#节点选择"
     # 具体域名优化
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
