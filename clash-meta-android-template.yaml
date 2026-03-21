@@ -163,9 +163,24 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    # 国内服务 - 走国内DNS
+    # 国际服务 - 走代理 DNS，防止 DNS 泄漏
+    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
+    'geosite:gfw': "1.1.1.1#节点选择"
+    # 具体域名优化
+    '+.rjj.cc': [223.5.5.5, 119.29.29.29]
+    '+.volces.com': [223.5.5.5, 119.29.29.29]
+    # 国内服务 - 走国内 DNS
     'geosite:cn': [223.5.5.5, 119.29.29.29]
-  # 优化：移除 fallback，在 fake-ip 模式下作用有限且增加延迟
+  # fallback 保留，防 DNS 污染（公共 WiFi 环境下尤其重要）
+  fallback:
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
 
 # 代理组配置
 proxy-groups:
