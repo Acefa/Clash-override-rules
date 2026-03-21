@@ -675,6 +675,7 @@ rules:
   - DOMAIN-SUFFIX,newcli.com,DIRECT
 
   # 5. 高频国内服务（微信、抖音、小红书、B站等）
+  - GEOSITE,cn,全球直连  # geosite:cn 覆盖所有国内域名，提前命中加速直连
   - RULE-SET,BilibiliHMT,哔哩哔哩  # B站港澳台内容
   - RULE-SET,Bilibili,哔哩哔哩  # B站主站
   - RULE-SET,ChinaMedia,国内媒体  # 国内媒体平台
@@ -711,7 +712,6 @@ rules:
   - RULE-SET,Download,全球直连  # 下载工具
 
   # 9. 兜底规则
-  - GEOSITE,cn,全球直连  # geosite:cn 域名直连，覆盖百度等国内域名
   - GEOIP,CN,全球直连,no-resolve  # GEOIP 匹配中国 IP
   - MATCH,漏网之鱼  # MATCH 匹配所有未匹配的流量
 

@@ -769,6 +769,7 @@ rules:
   - RULE-SET,UnBan,全球直连
 
   # 4. 高频国内服务（微信、抖音、小红书、B站等）
+  - GEOSITE,cn,全球直连  # geosite:cn 覆盖所有国内域名，提前命中加速直连
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
 
@@ -802,7 +803,6 @@ rules:
   - RULE-SET,Download,全球直连
 
   # 9. 兜底规则
-  - GEOSITE,cn,全球直连  # geosite:cn 域名直连，覆盖百度等国内域名
   - GEOIP,CN,全球直连,no-resolve
   - MATCH,漏网之鱼
 
