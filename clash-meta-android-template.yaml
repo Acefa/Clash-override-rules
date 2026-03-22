@@ -43,7 +43,7 @@ experimental:
 sniffer:
   enable: true
   parse-pure-ip: false  # 优化：不嗅探纯 IP 连接，减少延迟
-  force-dns-mapping: false  # 优化：减少强制映射开销
+  force-dns-mapping: true  # 为 Google Play 等 CDN 保留域名映射，减少分流歧义
   override-destination: false
   sniff:
     HTTP:
@@ -65,15 +65,16 @@ sniffer:
     # Apple 推送服务（关键）
     - "+.push.apple.com"
     - "+.apple.com"
-    # Google Play 服务（关键）
-    - "+.play.googleapis.com"
-    - "+.android.clients.google.com"
-    - "+.play.google.com"
-    - "+.update.googleapis.com"
-    - "dl.google.com"
-    - "dl-ssl.google.com"
-    - "+.gvt1.com"
-    - "+.ggpht.com"
+    # Google 推送长连接（兼容性关键）
+    - "mtalk.google.com"
+    - "alt1-mtalk.google.com"
+    - "alt2-mtalk.google.com"
+    - "alt3-mtalk.google.com"
+    - "alt4-mtalk.google.com"
+    - "alt5-mtalk.google.com"
+    - "alt6-mtalk.google.com"
+    - "alt7-mtalk.google.com"
+    - "alt8-mtalk.google.com"
     # 移动支付（安全关键）
     - "+.alipay.com"
     - "+.alipayobjects.com"
@@ -144,15 +145,6 @@ dns:
     - "+.alipay.com"
     - "+.wechat.com"
     - "+.weixin.qq.com"
-    # Google Play 服务（兼容性关键）
-    - "+.play.googleapis.com"
-    - "+.android.clients.google.com"
-    - "+.play.google.com"
-    - "+.update.googleapis.com"
-    - "dl.google.com"
-    - "dl-ssl.google.com"
-    - "+.gvt1.com"
-    - "+.ggpht.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -166,6 +158,18 @@ dns:
     # 国际服务 - 走代理 DNS，防止 DNS 泄漏
     'geosite:geolocation-!cn': "8.8.8.8#节点选择"
     'geosite:gfw': "1.1.1.1#节点选择"
+    # Google Play 下载链路 - 按代理出口解析，避免 CDN IP 与实际出站路径不一致
+    '+.play.google.com': "8.8.8.8#节点选择"
+    '+.play.googleapis.com': "8.8.8.8#节点选择"
+    '+.play-fe.googleapis.com': "8.8.8.8#节点选择"
+    '+.android.clients.google.com': "8.8.8.8#节点选择"
+    '+.update.googleapis.com': "8.8.8.8#节点选择"
+    'dl.google.com': "8.8.8.8#节点选择"
+    'dl-ssl.google.com': "8.8.8.8#节点选择"
+    '+.gvt1.com': "8.8.8.8#节点选择"
+    '+.gvt2.com': "8.8.8.8#节点选择"
+    '+.ggpht.com': "8.8.8.8#节点选择"
+    '+.googleusercontent.com': "8.8.8.8#节点选择"
     # 具体域名优化
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
@@ -575,13 +579,6 @@ rule-providers:
     path: ./ruleset/GoogleFCM.list
     interval: 172800
 
-  GoogleCN:
-    type: http
-    behavior: classical
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/GoogleCN.list"
-    path: ./ruleset/GoogleCN.list
-    interval: 172800
-
   GitHub:
     type: http
     behavior: domain
@@ -773,8 +770,7 @@ rules:
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
 
-  # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
-  - RULE-SET,GoogleCN,全球直连
+  # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,YouTube,油管视频
   - RULE-SET,Twitter,X平台
   - RULE-SET,Telegram,电报消息

@@ -437,14 +437,6 @@ rule-providers:
     path: ./ruleset/GoogleFCM.list
     interval: 172800
 
-  GoogleCN:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/GoogleCN.list"
-    path: ./ruleset/GoogleCN.list
-    interval: 172800
-
   GitHub:
     type: http
     behavior: domain
@@ -681,8 +673,7 @@ rules:
   - RULE-SET,ChinaMedia,国内媒体  # 国内媒体平台
   - RULE-SET,SteamCN,全球直连  # Steam 中国区
 
-  # 5. 高频国外服务（Google、YouTube、Twitter、Telegram、GitHub）
-  - RULE-SET,GoogleCN,全球直连  # Google 中国服务
+  # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,YouTube,油管视频
   - RULE-SET,Twitter,X平台
   - RULE-SET,Telegram,电报消息
