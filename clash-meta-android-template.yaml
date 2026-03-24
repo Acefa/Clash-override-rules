@@ -158,18 +158,18 @@ dns:
     # 国际服务 - 走代理 DNS，防止 DNS 泄漏
     'geosite:geolocation-!cn': "8.8.8.8#节点选择"
     'geosite:gfw': "1.1.1.1#节点选择"
-    # Google Play 下载链路 - 按代理出口解析，避免 CDN IP 与实际出站路径不一致
-    '+.play.google.com': "8.8.8.8#节点选择"
-    '+.play.googleapis.com': "8.8.8.8#节点选择"
-    '+.play-fe.googleapis.com': "8.8.8.8#节点选择"
-    '+.android.clients.google.com': "8.8.8.8#节点选择"
-    '+.update.googleapis.com': "8.8.8.8#节点选择"
-    'dl.google.com': "8.8.8.8#节点选择"
-    'dl-ssl.google.com': "8.8.8.8#节点选择"
-    '+.gvt1.com': "8.8.8.8#节点选择"
-    '+.gvt2.com': "8.8.8.8#节点选择"
-    '+.ggpht.com': "8.8.8.8#节点选择"
-    '+.googleusercontent.com': "8.8.8.8#节点选择"
+    # Google Play 下载链路 - 使用国内 DNS 直连解析（低延迟），IP 仍走代理访问
+    '+.play.google.com': [223.5.5.5, 119.29.29.29]
+    '+.play.googleapis.com': [223.5.5.5, 119.29.29.29]
+    '+.play-fe.googleapis.com': [223.5.5.5, 119.29.29.29]
+    '+.android.clients.google.com': [223.5.5.5, 119.29.29.29]
+    '+.update.googleapis.com': [223.5.5.5, 119.29.29.29]
+    'dl.google.com': [223.5.5.5, 119.29.29.29]
+    'dl-ssl.google.com': [223.5.5.5, 119.29.29.29]
+    '+.gvt1.com': [223.5.5.5, 119.29.29.29]
+    '+.gvt2.com': [223.5.5.5, 119.29.29.29]
+    '+.ggpht.com': [223.5.5.5, 119.29.29.29]
+    '+.googleusercontent.com': [223.5.5.5, 119.29.29.29]
     # 具体域名优化
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
@@ -363,6 +363,20 @@ proxy-groups:
       - 手动切换
       - DIRECT
 
+  - name: 谷歌下载
+    type: select
+    proxies:
+      - 香港节点
+      - 狮城节点
+      - 日本节点
+      - 台湾节点
+      - 美国节点
+      - 节点选择
+      - 自动选择
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
   - name: 微软云盘
     type: select
     proxies:
@@ -519,6 +533,7 @@ proxy-groups:
       - 国外媒体
       - 国内媒体
       - 谷歌FCM
+      - 谷歌下载
       - 微软云盘
       - 苹果服务
       - 游戏平台
@@ -578,6 +593,22 @@ rule-providers:
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/GoogleFCM.list"
     path: ./ruleset/GoogleFCM.list
     interval: 172800
+
+  GoogleDownload:
+    type: inline
+    behavior: classical
+    payload:
+      - DOMAIN-SUFFIX,play.google.com
+      - DOMAIN-SUFFIX,play.googleapis.com
+      - DOMAIN-SUFFIX,play-fe.googleapis.com
+      - DOMAIN-SUFFIX,android.clients.google.com
+      - DOMAIN-SUFFIX,update.googleapis.com
+      - DOMAIN,dl.google.com
+      - DOMAIN,dl-ssl.google.com
+      - DOMAIN-SUFFIX,gvt1.com
+      - DOMAIN-SUFFIX,gvt2.com
+      - DOMAIN-SUFFIX,ggpht.com
+      - DOMAIN-SUFFIX,googleusercontent.com
 
   GitHub:
     type: http
@@ -765,29 +796,32 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
 
-  # 4. 高频国内服务（微信、抖音、小红书、B站等）
+  # 4. Google Play 下载（高优先级，加速下载）
+  - RULE-SET,GoogleDownload,谷歌下载
+  - RULE-SET,GoogleFCM,谷歌FCM
+
+  # 5. 高频国内服务（微信、抖音、小红书、B站等）
   - GEOSITE,cn,全球直连  # geosite:cn 覆盖所有国内域名，提前命中加速直连
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
 
-  # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
+  # 6. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,YouTube,油管视频
   - RULE-SET,Twitter,X平台
   - RULE-SET,Telegram,电报消息
   - RULE-SET,GitHub,节点选择
 
-  # 6. AI 服务
+  # 7. AI 服务
   - RULE-SET,AI-MIX,AI-UNHK
   - RULE-SET,OpenAi,OpenAi
 
-  # 7. 常用服务
+  # 8. 常用服务
   - RULE-SET,OneDrive,微软云盘
   - RULE-SET,Apple,苹果服务
   - RULE-SET,Netflix,奈飞视频
   - RULE-SET,Bahamut,巴哈姆特
 
-  # 8. 低频服务
-  - RULE-SET,GoogleFCM,谷歌FCM
+  # 9. 低频服务
   - RULE-SET,Epic,游戏平台
   - RULE-SET,Origin,游戏平台
   - RULE-SET,Sony,游戏平台
