@@ -103,7 +103,7 @@ sniffer:
 # TUN 配置
 tun:
   enable: true
-  stack: mixed
+  stack: system
   device: Mihomo
   mtu: 1400
   dns-hijack:
@@ -122,7 +122,7 @@ tun:
 dns:
   enable: true
   listen: 127.0.0.1:1053
-  ipv6: true  # 启用 IPv6 DNS 劫持
+  ipv6: false  # 启用 IPv6 DNS 劫持
   respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.0/16

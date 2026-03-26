@@ -102,7 +102,7 @@ sniffer:
 # TUN 配置（兼容性优化）
 tun:
   enable: true  # 启用 TUN 模式，接管系统流量
-  stack: mixed  # 协议栈模式：system/gvisor/mixed，mixed 兼容性最好
+  stack: system  # 协议栈模式：system/gvisor/mixed，mixed 兼容性最好
   device: Mihomo  # 虚拟网卡名称
   mtu: 1500  # 最大传输单元
   dns-hijack:  # DNS 劫持配置
@@ -121,7 +121,7 @@ tun:
 dns:
   enable: true
   listen: 127.0.0.1:1053
-  ipv6: true  # 启用 IPv6 DNS 劫持
+  ipv6: false  # 启用 IPv6 DNS 劫持
   respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.0/16
