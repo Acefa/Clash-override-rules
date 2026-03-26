@@ -20,7 +20,7 @@ proxies: []
 mixed-port: 7890
 allow-lan: false
 mode: rule
-ipv6: false
+ipv6: true
 unified-delay: true
 tcp-concurrent: true
 log-level: info
@@ -122,7 +122,7 @@ tun:
 dns:
   enable: true
   listen: 127.0.0.1:1053
-  ipv6: false
+  ipv6: true  # 启用 IPv6 DNS 劫持
   respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.0/16
@@ -130,35 +130,29 @@ dns:
   fake-ip-filter:
     - "+.lan"
     - "+.local"
-    # Windows 连接测试
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
-    # 时间服务器
     - "time.*.com"
     - "ntp.*.com"
-    # 银行应用（安全关键）
     - "+.icbc.com.cn"
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
-    # 移动支付（安全关键）
     - "+.alipay.com"
     - "+.wechat.com"
     - "+.weixin.qq.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
-  proxy-server-nameserver:  # 优化：使用明文 DNS 加快代理服务器解析
+  proxy-server-nameserver:
     - 223.5.5.5
     - 119.29.29.29
   nameserver:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    # 国际服务 - 走代理 DNS，防止 DNS 泄漏
-    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
-    'geosite:gfw': "1.1.1.1#节点选择"
-    # Google Play 下载链路 - 使用国内 DNS 直连解析（低延迟），IP 仍走代理访问
+    'geosite:geolocation-!cn': "https://1.1.1.1/dns-query#节点选择"
+    'geosite:gfw': "https://8.8.8.8/dns-query#节点选择"
     '+.play.google.com': [223.5.5.5, 119.29.29.29]
     '+.play.googleapis.com': [223.5.5.5, 119.29.29.29]
     '+.play-fe.googleapis.com': [223.5.5.5, 119.29.29.29]
@@ -170,15 +164,12 @@ dns:
     '+.gvt2.com': [223.5.5.5, 119.29.29.29]
     '+.ggpht.com': [223.5.5.5, 119.29.29.29]
     '+.googleusercontent.com': [223.5.5.5, 119.29.29.29]
-    # 具体域名优化
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
-    # 国内服务 - 走国内 DNS
     'geosite:cn': [223.5.5.5, 119.29.29.29]
-  # fallback 保留，防 DNS 污染（公共 WiFi 环境下尤其重要）
   fallback:
-    - tls://1.1.1.1:853
-    - tls://8.8.8.8:853
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
   fallback-filter:
     geoip: true
     geoip-code: CN

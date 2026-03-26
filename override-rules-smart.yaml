@@ -6,7 +6,7 @@ mixed-port: 7890  # 混合端口，同时支持 HTTP(S) 和 SOCKS5 协议
 allow-lan: false  # 禁止局域网连接，仅本机可用，提高安全性
 bind-address: "127.0.0.1"  # 绑定到本地回环地址，只允许本机访问
 mode: rule  # 运行模式：rule(规则模式) / global(全局代理) / direct(全局直连)
-ipv6: false  # 关闭 IPv6，避免 DNS 泄漏和兼容性问题
+ipv6: true  # 关闭 IPv6，避免 DNS 泄漏和兼容性问题
 unified-delay: true  # 统一延迟测试，更准确的节点延迟
 tcp-concurrent: true  # TCP 并发连接，提升多连接场景性能
 log-level: info  # 日志级别：silent/error/warning/info/debug
@@ -107,26 +107,23 @@ tun:
 
 # DNS 优化配置（防泄漏）
 dns:
-  enable: true  # 启用 DNS 服务
-  listen: 127.0.0.1:1053  # DNS 监听地址和端口
-  ipv6: false  # 关闭 IPv6 DNS 解析，防止 DNS 泄漏
-  respect-rules: true  # DNS 请求遵守代理规则
-  enhanced-mode: fake-ip  # DNS 增强模式：fake-ip(虚假IP) / redir-host(真实IP)
-  fake-ip-range: 198.18.0.0/16  # fake-ip 地址池范围
-  fake-ip-filter-mode: blacklist  # fake-ip 过滤模式：whitelist(白名单) / blacklist(黑名单)
+  enable: true
+  listen: 127.0.0.1:1053
+  ipv6: true  # 启用 IPv6 DNS 劫持
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.0/16
+  fake-ip-filter-mode: blacklist
   fake-ip-filter:
     - "+.lan"
     - "+.local"
-    # Windows 系统服务
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
     - "+.microsoft.com"
     - "+.windows.com"
     - "+.windowsupdate.com"
-    # 时间服务
     - "time.*.com"
     - "ntp.*.com"
-    # 金融安全（必须真实 IP）
     - "+.icbc.com.cn"
     - "+.ccb.com.cn"
     - "+.boc.cn"
@@ -134,7 +131,6 @@ dns:
     - "+.alipay.com"
     - "+.wechat.com"
     - "+.weixin.qq.com"
-    # 常用国内服务（兼容性）
     - "+.qq.com"
     - "+.tencent.com"
     - "+.baidu.com"
@@ -151,17 +147,14 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    # 国际服务 - 走代理 DNS，防止 DNS 泄漏（geolocation-!cn 已覆盖 google/youtube/twitter 等）
-    'geosite:geolocation-!cn': "8.8.8.8#节点选择"
-    'geosite:gfw': "1.1.1.1#节点选择"
-    # 具体域名优化
+    'geosite:geolocation-!cn': "https://1.1.1.1/dns-query#节点选择"
+    'geosite:gfw': "https://8.8.8.8/dns-query#节点选择"
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
-    # 国内服务
     'geosite:cn': [223.5.5.5, 119.29.29.29]
   fallback:
-    - tls://1.1.1.1:853
-    - tls://8.8.8.8:853
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
   fallback-filter:
     geoip: true
     geoip-code: CN
