@@ -6,7 +6,7 @@ mixed-port: 7890  # 混合端口，同时支持 HTTP(S) 和 SOCKS5 协议
 allow-lan: false  # 禁止局域网连接，仅本机可用，提高安全性
 bind-address: "127.0.0.1"  # 绑定到本地回环地址，只允许本机访问
 mode: rule  # 运行模式：rule(规则模式) / global(全局代理) / direct(全局直连)
-ipv6: false  # 关闭 IPv6，避免 DNS 泄漏和兼容性问题
+ipv6: true  # 关闭 IPv6，避免 DNS 泄漏和兼容性问题
 unified-delay: true  # 统一延迟测试，更准确的节点延迟
 tcp-concurrent: true  # TCP 并发连接，提升多连接场景性能
 log-level: info  # 日志级别：silent/error/warning/info/debug
@@ -61,6 +61,17 @@ sniffer:
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
+    # 语音识别服务（LazyTyper）
+    - "+.cn"
+    - "+.com.cn"
+    - "+.volcengine.com"
+    - "+.volces.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
+    - "+.aliyuncs.com"
+    - "+.aliyun.com"
+    - "+.rjj.cc"
+    - "+.newcli.com"
 
 
   skip-dst-address:  # 跳过嗅探的目标 IP 地址段（Telegram IP 段）
@@ -126,6 +137,16 @@ dns:
     - "+.baidu.com"
     - "+.taobao.com"
     - "+.jd.com"
+    - "+.cn"
+    - "+.com.cn"
+    - "+.volcengine.com"
+    - "+.volces.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
+    - "+.aliyuncs.com"
+    - "+.aliyun.com"
+    - "+.rjj.cc"
+    - "+.newcli.com"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -622,7 +643,7 @@ rules:
   - IP-CIDR6,fd00::/8,DIRECT,no-resolve  # IPv6 私有地址
 
   # 2. 广告拦截（减少无效请求）
-  - RULE-SET,BanAD,广告拦截  # RULE-SET 表示使用规则集
+  - RULE-SET,BanAD,广告拦截
   - RULE-SET,BanProgramAD,应用净化
 
   # 3. 基础规则
@@ -630,18 +651,16 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
 
-  # 4. 进程直连规则 - 指定进程的流量直连
-  - PROCESS-NAME,shandianshuo.exe,DIRECT  # 闪电说程序直连
-  - PROCESS-NAME,LazyTyper.exe,DIRECT  # LazyTyper 懒人打字工具
-
-  # 5. 火山引擎优化（流式语音识别）- 国内服务直连
-  - DOMAIN-SUFFIX,volcengine.com,DIRECT  # DOMAIN-SUFFIX 表示匹配域名后缀
+  # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
   - DOMAIN-SUFFIX,volces.com,DIRECT
   - DOMAIN-SUFFIX,bytedance.com,DIRECT
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
   - DOMAIN-SUFFIX,newcli.com,DIRECT
-
+  
 
   # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,YouTube,油管视频
