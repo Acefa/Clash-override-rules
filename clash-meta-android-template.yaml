@@ -26,7 +26,7 @@ tcp-concurrent: true
 log-level: info
 find-process-mode: off
 global-ua: clash.meta
-global-client-fingerprint: random
+global-client-fingerprint: chrome
 keep-alive-idle: 600
 keep-alive-interval: 15
 disable-keep-alive: false
