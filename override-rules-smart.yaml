@@ -36,9 +36,9 @@ experimental:
 
 # 嗅探配置（Windows 端优化）
 sniffer:
-  enable: true  # 启用域名嗅探
-  parse-pure-ip: true  # 解析纯 IP 连接，Windows 端建议开启
-  force-dns-mapping: true  # 强制 DNS 映射，确保域名正确解析
+  enable: true
+  parse-pure-ip: false
+  force-dns-mapping: true
   override-destination: false  # 不覆盖目标地址
   sniff:  # 嗅探协议配置
     HTTP:
@@ -169,8 +169,12 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    'geosite:geolocation-!cn': "https://1.1.1.1/dns-query#节点选择"
-    'geosite:gfw': "https://8.8.8.8/dns-query#节点选择"
+    '+.youtube.com': [8.8.8.8, 8.8.4.4]
+    '+.googlevideo.com': [8.8.8.8, 8.8.4.4]
+    '+.google.com': [8.8.8.8, 8.8.4.4]
+    '+.gstatic.com': [8.8.8.8, 8.8.4.4]
+    'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    'geosite:gfw': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
     'geosite:cn': [223.5.5.5, 119.29.29.29]
@@ -196,10 +200,10 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Static.png
     include-all: true  # 包含所有订阅节点
     exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
-    url: "http://www.gstatic.com/generate_204"  # 测试 URL
-    interval: 600  # 测速间隔（秒）
-    timeout: 5000  # 连接超时时间（毫秒）
-    tolerance: 30  # 容差值（毫秒），延迟差小于此值不切换节点
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+    timeout: 5000
+    tolerance: 30
     lazy: true  # 延迟测速，仅在使用时才测速
     uselightgbm: true  # 使用 LightGBM 机器学习模型
     collectdata: true  # 收集数据用于模型训练

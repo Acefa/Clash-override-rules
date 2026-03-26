@@ -26,9 +26,9 @@ experimental:
 
 # 嗅探配置（Windows 端优化）
 sniffer:
-  enable: true  # 启用域名嗅探
-  parse-pure-ip: true  # 解析纯 IP 连接，Windows 端建议开启
-  force-dns-mapping: true  # 强制 DNS 映射，确保域名正确解析
+  enable: true
+  parse-pure-ip: false
+  force-dns-mapping: true
   override-destination: false  # 不覆盖目标地址
   sniff:  # 嗅探协议配置
     HTTP:
@@ -116,7 +116,6 @@ dns:
   fake-ip-range: 198.18.0.0/16
   fake-ip-filter-mode: blacklist
   cache-algorithm: arc
-  cache-algorithm: arc
   fake-ip-filter:
     - "+.lan"
     - "+.local"
@@ -159,8 +158,12 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    'geosite:geolocation-!cn': "https://1.1.1.1/dns-query#节点选择"
-    'geosite:gfw': "https://8.8.8.8/dns-query#节点选择"
+    '+.youtube.com': [8.8.8.8, 8.8.4.4]
+    '+.googlevideo.com': [8.8.8.8, 8.8.4.4]
+    '+.google.com': [8.8.8.8, 8.8.4.4]
+    '+.gstatic.com': [8.8.8.8, 8.8.4.4]
+    'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    'geosite:gfw': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
     '+.volces.com': [223.5.5.5, 119.29.29.29]
     'geosite:cn': [223.5.5.5, 119.29.29.29]
@@ -187,14 +190,14 @@ proxy-groups:
     include-all: true  # 包含所有订阅节点
 
   - name: 自动选择
-    type: url-test  # 自动测速选择延迟最低的节点
+    type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png
     include-all: true
-    url: "http://www.gstatic.com/generate_204"  # 测速 URL
-    interval: 600  # 测速间隔（秒）
-    tolerance: 100  # 容差值（毫秒），延迟差小于此值不切换节点
-    lazy: true  # 延迟测速，仅在使用时才测速
-    expected-status: 204  # 期望的 HTTP 状态码
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+    tolerance: 50
+    lazy: true
+    expected-status: 204
 
   - name: 负载均衡
     type: load-balance  # 负载均衡模式
