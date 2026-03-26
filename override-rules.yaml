@@ -110,11 +110,13 @@ tun:
 dns:
   enable: true
   listen: 127.0.0.1:1053
-  ipv6: true  # 启用 IPv6 DNS 劫持
+  ipv6: true
   respect-rules: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.0/16
   fake-ip-filter-mode: blacklist
+  cache-algorithm: arc
+  cache-algorithm: arc
   fake-ip-filter:
     - "+.lan"
     - "+.local"
@@ -660,7 +662,7 @@ rules:
   - DOMAIN-SUFFIX,aliyun.com,DIRECT
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
   - DOMAIN-SUFFIX,newcli.com,DIRECT
-  
+
 
   # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,YouTube,油管视频
