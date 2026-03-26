@@ -19,6 +19,7 @@ dns-optimized.yml
 .spec-workflow/
 unpublished/
 未发布/
+archive/
 
 # 临时文件
 *.tmp
