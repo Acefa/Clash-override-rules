@@ -29,7 +29,7 @@ interface-name: ""  # 网络接口名称，空字符串强制绑定到 bind-addr
 log-level: info  # 日志级别：silent/error/warning/info/debug
 find-process-mode: strict  # 进程匹配模式：strict(严格) / off(关闭)
 global-ua: clash.meta  # 全局 User-Agent 标识
-global-client-fingerprint: random  # 客户端指纹：chrome/firefox/safari/ios/android/edge/360/qq/random
+global-client-fingerprint: chrome
 keep-alive-idle: 600  # TCP keep-alive 空闲时间（秒）
 keep-alive-interval: 15  # TCP keep-alive 探测间隔（秒）
 disable-keep-alive: false  # 是否禁用 keep-alive
@@ -89,6 +89,7 @@ sniffer:
     - "+.aliyun.com"
     - "+.rjj.cc"
     - "+.newcli.com"
+    - "+.openrouter.ai"
 
   skip-dst-address:  # 跳过嗅探的目标 IP 地址段（Telegram IP 段）
     - 91.105.192.0/23
@@ -164,6 +165,7 @@ dns:
     - "+.aliyun.com"
     - "+.rjj.cc"
     - "+.newcli.com"
+    - "+.openrouter.ai"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -681,6 +683,7 @@ rules:
   - DOMAIN-SUFFIX,aliyun.com,DIRECT
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
   - DOMAIN-SUFFIX,newcli.com,DIRECT
+  - DOMAIN-SUFFIX,openrouter.ai,DIRECT
 
   # 5. 高频国内服务（微信、抖音、小红书、B站等）
   - GEOSITE,cn,全球直连  # geosite:cn 覆盖所有国内域名，提前命中加速直连
