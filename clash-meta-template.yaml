@@ -78,18 +78,6 @@ sniffer:
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
-    # 语音识别服务
-    - "+.cn"
-    - "+.com.cn"
-    - "+.volcengine.com"
-    - "+.volces.com"
-    - "+.bytedance.com"
-    - "+.deepseek.com"
-    - "+.aliyuncs.com"
-    - "+.aliyun.com"
-    - "+.rjj.cc"
-    - "+.newcli.com"
-    - "+.openrouter.ai"
 
   skip-dst-address:  # 跳过嗅探的目标 IP 地址段（Telegram IP 段）
     - 91.105.192.0/23
@@ -157,15 +145,6 @@ dns:
     - "+.jd.com"
     - "+.cn"
     - "+.com.cn"
-    - "+.volcengine.com"
-    - "+.volces.com"
-    - "+.bytedance.com"
-    - "+.deepseek.com"
-    - "+.aliyuncs.com"
-    - "+.aliyun.com"
-    - "+.rjj.cc"
-    - "+.newcli.com"
-    - "+.openrouter.ai"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -176,10 +155,10 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
-    # 火山引擎专用（字节跳动 DNS）
-    '+.volcengine.com': [180.184.1.1, 180.184.2.2]
-    '+.volces.com': [180.184.1.1, 180.184.2.2]
-    '+.bytedance.com': [180.184.1.1, 180.184.2.2]
+    # 火山引擎专用（改用阿里 DNS，更快更稳定）
+    '+.volcengine.com': [223.5.5.5, 223.6.6.6]
+    '+.volces.com': [223.5.5.5, 223.6.6.6]
+    '+.bytedance.com': [223.5.5.5, 223.6.6.6]
     # 其他 AI 服务
     '+.deepseek.com': [223.5.5.5, 119.29.29.29]
     '+.aliyuncs.com': [223.5.5.5, 223.6.6.6]
