@@ -43,8 +43,8 @@ experimental:
 sniffer:
   enable: true
   parse-pure-ip: false  # 优化：不嗅探纯 IP 连接，减少延迟
-  force-dns-mapping: true  # 为 Google Play 等 CDN 保留域名映射，减少分流歧义
-  override-destination: false
+  force-dns-mapping: false  # 避免 DNS 污染导致连接死锁
+  override-destination: true  # 用嗅探域名覆盖硬编码 IP，提高分流准确性
   sniff:
     HTTP:
       ports: [80, 8080]  # 优化：缩小端口范围
