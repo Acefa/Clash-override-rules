@@ -168,6 +168,16 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   nameserver-policy:
+    # 火山引擎专用（字节跳动 DNS）
+    '+.volcengine.com': [180.184.1.1, 180.184.2.2]
+    '+.volces.com': [180.184.1.1, 180.184.2.2]
+    '+.bytedance.com': [180.184.1.1, 180.184.2.2]
+    # 其他 AI 服务
+    '+.deepseek.com': [223.5.5.5, 119.29.29.29]
+    '+.aliyuncs.com': [223.5.5.5, 223.6.6.6]
+    '+.aliyun.com': [223.5.5.5, 223.6.6.6]
+    '+.openrouter.ai': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    # 国外服务
     '+.youtube.com': [8.8.8.8, 8.8.4.4]
     '+.googlevideo.com': [8.8.8.8, 8.8.4.4]
     '+.google.com': [8.8.8.8, 8.8.4.4]
@@ -175,7 +185,6 @@ dns:
     'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
     'geosite:gfw': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
     '+.rjj.cc': [223.5.5.5, 119.29.29.29]
-    '+.volces.com': [223.5.5.5, 119.29.29.29]
     'geosite:cn': [223.5.5.5, 119.29.29.29]
   fallback:
     - https://1.1.1.1/dns-query
@@ -192,7 +201,7 @@ proxy-groups:
   - name: Smart选择
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
-    proxies: [Smart粘性, Smart轮询]
+    proxies: [Smart粘性]
 
   - name: Smart粘性
     type: smart
@@ -208,19 +217,6 @@ proxy-groups:
     collectdata: true
     strategy: sticky-sessions
 
-  - name: Smart轮询
-    type: smart
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
-    include-all: true
-    exclude-filter: "(?i)回国|国内|CN-|China-Return"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 600
-    timeout: 5000
-    tolerance: 30
-    lazy: true
-    uselightgbm: true
-    collectdata: true
-    strategy: round-robin
 
   - name: 节点选择
     type: select
