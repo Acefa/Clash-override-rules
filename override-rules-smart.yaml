@@ -17,6 +17,14 @@ keep-alive-idle: 600
 keep-alive-interval: 15
 disable-keep-alive: false
 
+# Smart 内核配置 - 智能节点选择核心功能
+smart-core:
+  uselightgbm: true
+  lgbm-auto-update: false
+  collectdata: true
+  sample-rate: 1
+  smart-collector-size: 100
+
 profile:
   store-selected: true  # 存储选择的节点，重启后自动选择上次使用的节点
   store-fake-ip: true  # 持久化 fake-ip 映射表
@@ -181,10 +189,43 @@ dns:
 
 # 代理组配置
 proxy-groups:
+  - name: Smart选择
+    type: select
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
+    proxies: [Smart粘性, Smart轮询]
+
+  - name: Smart粘性
+    type: smart
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Static.png
+    include-all: true
+    exclude-filter: "(?i)回国|国内|CN-|China-Return"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+    timeout: 5000
+    tolerance: 30
+    lazy: true
+    uselightgbm: true
+    collectdata: true
+    strategy: sticky-sessions
+
+  - name: Smart轮询
+    type: smart
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
+    include-all: true
+    exclude-filter: "(?i)回国|国内|CN-|China-Return"
+    url: "http://www.gstatic.com/generate_204"
+    interval: 600
+    timeout: 5000
+    tolerance: 30
+    lazy: true
+    uselightgbm: true
+    collectdata: true
+    strategy: round-robin
+
   - name: 节点选择
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
-    proxies: [自动选择, 负载均衡, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [Smart选择, 自动选择, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 手动切换
     type: select
@@ -214,34 +255,34 @@ proxy-groups:
   - name: 电报消息
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png
-    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: X平台
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Twitter.png
-    proxies: [节点选择, 自动选择, 负载均衡, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
 
   - name: OpenAi
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
-    proxies: [节点选择, 自动选择, 负载均衡, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: AI-UNHK
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     include-all: true
     exclude-filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong"
-    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 油管视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/YouTube.png
-    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 奈飞视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netflix.png
-    proxies: [节点选择, 自动选择, 负载均衡, 奈飞节点, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, 奈飞节点, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 巴哈姆特
     type: select
@@ -256,7 +297,7 @@ proxy-groups:
   - name: 国外媒体
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ForeignMedia.png
-    proxies: [节点选择, 自动选择, 负载均衡, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 自动选择, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 国内媒体
     type: select
@@ -266,44 +307,44 @@ proxy-groups:
   - name: 谷歌FCM
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
-    proxies: [节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, Smart选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 微软Bing
     type: select
     icon: https://testingcf.jsdelivr.net/gh/shindgewongxj/WHATSINStash@master/icon/bing.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 微软云盘
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/OneDrive.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 微软服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png
-    proxies: [节点选择, DIRECT, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [节点选择, Smart选择, DIRECT, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 苹果服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 游戏平台
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Game.png
-    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 网易音乐
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netease_Music.png
     include-all: true
     filter: "(?i)网易|音乐|NetEase|Music"
-    proxies: [DIRECT, 节点选择, 自动选择]
+    proxies: [DIRECT, 节点选择, Smart选择, 自动选择]
 
   - name: 全球直连
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Direct.png
-    proxies: [DIRECT, 节点选择, 自动选择]
+    proxies: [DIRECT, 节点选择, Smart选择, 自动选择]
 
   - name: 广告拦截
     type: select
@@ -318,7 +359,7 @@ proxy-groups:
   - name: 漏网之鱼
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Final.png
-    proxies: [节点选择, 自动选择, 负载均衡, DIRECT, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换]
+    proxies: [节点选择, Smart选择, 自动选择, DIRECT, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换]
 
   - name: 香港节点
     type: url-test
