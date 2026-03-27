@@ -6,26 +6,16 @@ mixed-port: 7890  # 混合端口，同时支持 HTTP(S) 和 SOCKS5 协议
 allow-lan: false  # 禁止局域网连接，仅本机可用，提高安全性
 bind-address: "127.0.0.1"  # 绑定到本地回环地址，只允许本机访问
 mode: rule  # 运行模式：rule(规则模式) / global(全局代理) / direct(全局直连)
-ipv6: true  # 关闭 IPv6，避免 DNS 泄漏和兼容性问题
+ipv6: false  # 统一关闭 IPv6，避免 DNS 泄漏
 unified-delay: true  # 统一延迟测试，更准确的节点延迟
 tcp-concurrent: true  # TCP 并发连接，提升多连接场景性能
 log-level: info  # 日志级别：silent/error/warning/info/debug
 find-process-mode: strict  # 进程匹配模式：strict(严格) / off(关闭)
 global-ua: clash.meta  # 全局 User-Agent 标识
 global-client-fingerprint: chrome
-keep-alive-idle: 600  # TCP keep-alive 空闲时间（秒）
-keep-alive-interval: 15  # TCP keep-alive 探测间隔（秒）
-disable-keep-alive: false  # 是否禁用 keep-alive
-
-# Smart 内核配置 - 智能节点选择核心功能
-smart-core:
-  uselightgbm: true  # 启用 LightGBM 机器学习模型，用于智能节点选择
-  lgbm-auto-update: false  # 关闭自动更新模型，避免不必要的网络请求
-  # lgbm-update-interval: 72  # 模型更新间隔（小时），默认72小时
-  # lgbm-url: "https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin"  # 模型下载地址
-  collectdata: true  # 启用数据收集，用于训练和优化模型
-  sample-rate: 1  # 数据采样率（0-1），1表示收集所有数据
-  smart-collector-size: 100  # Smart 数据收集器大小（MB）
+keep-alive-idle: 600
+keep-alive-interval: 15
+disable-keep-alive: false
 
 profile:
   store-selected: true  # 存储选择的节点，重启后自动选择上次使用的节点
@@ -38,8 +28,8 @@ experimental:
 sniffer:
   enable: true
   parse-pure-ip: false
-  force-dns-mapping: true
-  override-destination: false  # 不覆盖目标地址
+  force-dns-mapping: false
+  override-destination: true
   sniff:  # 嗅探协议配置
     HTTP:
       ports: [80, 8080-8090]  # HTTP 嗅探端口范围
@@ -189,45 +179,12 @@ dns:
       - 240.0.0.0/4
       - 0.0.0.0/32
 
-# 代理组配置（Smart 智能版）
+# 代理组配置
 proxy-groups:
-  - name: Smart选择  # Smart 模式选择器
-    type: select  # 手动选择模式
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
-    proxies: [Smart粘性, Smart轮询]  # 可选择粘性会话或轮询模式
-
-  - name: Smart粘性  # Smart 粘性会话模式
-    type: smart  # Smart 智能代理组类型，使用机器学习选择最优节点
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Static.png
-    include-all: true  # 包含所有订阅节点
-    exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
-    url: "http://www.gstatic.com/generate_204"
-    interval: 300
-    timeout: 5000
-    tolerance: 30
-    lazy: true  # 延迟测速，仅在使用时才测速
-    uselightgbm: true  # 使用 LightGBM 机器学习模型
-    collectdata: true  # 收集数据用于模型训练
-    strategy: sticky-sessions  # 策略：粘性会话，同一目标使用同一节点
-
-  - name: Smart轮询  # Smart 轮询模式
-    type: smart  # Smart 智能代理组类型
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
-    include-all: true  # 包含所有订阅节点
-    exclude-filter: "(?i)回国|国内|CN-|China-Return"  # 排除回国节点
-    url: "http://www.gstatic.com/generate_204"  # 测试 URL
-    interval: 600  # 测速间隔（秒）
-    timeout: 5000  # 连接超时时间（毫秒）
-    tolerance: 30  # 容差值（毫秒）
-    lazy: true  # 延迟测速，仅在使用时才测速
-    uselightgbm: true  # 使用 LightGBM 机器学习模型
-    collectdata: true  # 收集数据用于模型训练
-    strategy: round-robin  # 策略：轮询，请求分散到不同节点
-
   - name: 节点选择
-    type: select  # 手动选择模式
+    type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
-    proxies: [Smart选择, 自动选择, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [自动选择, 负载均衡, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 手动切换
     type: select
@@ -235,46 +192,56 @@ proxy-groups:
     include-all: true
 
   - name: 自动选择
-    type: url-test  # 自动测速选择延迟最低的节点
+    type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png
     include-all: true
     url: "http://www.gstatic.com/generate_204"
     interval: 600
-    tolerance: 100
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 负载均衡
+    type: load-balance
+    strategy: round-robin
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
+    include-all: true
+    url: "http://www.gstatic.com/generate_204"
+    interval: 1800
     lazy: true
     expected-status: 204
 
   - name: 电报消息
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png
-    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: X平台
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Twitter.png
-    proxies: [节点选择, Smart选择, 自动选择, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
 
   - name: OpenAi
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
-    proxies: [节点选择, Smart选择, 自动选择, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: AI-UNHK
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     include-all: true
     exclude-filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong"
-    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 油管视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/YouTube.png
-    proxies: [节点选择, Smart选择, 自动选择, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 奈飞视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netflix.png
-    proxies: [节点选择, Smart选择, 自动选择, 奈飞节点, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, 奈飞节点, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 巴哈姆特
     type: select
@@ -289,7 +256,7 @@ proxy-groups:
   - name: 国外媒体
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ForeignMedia.png
-    proxies: [节点选择, Smart选择, 自动选择, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 负载均衡, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 国内媒体
     type: select
@@ -299,44 +266,44 @@ proxy-groups:
   - name: 谷歌FCM
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
-    proxies: [节点选择, Smart选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 微软Bing
     type: select
     icon: https://testingcf.jsdelivr.net/gh/shindgewongxj/WHATSINStash@master/icon/bing.png
-    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 微软云盘
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/OneDrive.png
-    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 微软服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png
-    proxies: [节点选择, Smart选择, DIRECT, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [节点选择, DIRECT, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 苹果服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple.png
-    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 游戏平台
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Game.png
-    proxies: [DIRECT, 节点选择, Smart选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
+    proxies: [DIRECT, 节点选择, 美国节点, 香港节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 手动切换]
 
   - name: 网易音乐
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netease_Music.png
     include-all: true
     filter: "(?i)网易|音乐|NetEase|Music"
-    proxies: [DIRECT, 节点选择, Smart选择, 自动选择]
+    proxies: [DIRECT, 节点选择, 自动选择]
 
   - name: 全球直连
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Direct.png
-    proxies: [DIRECT, 节点选择, Smart选择, 自动选择]
+    proxies: [DIRECT, 节点选择, 自动选择]
 
   - name: 广告拦截
     type: select
@@ -351,7 +318,7 @@ proxy-groups:
   - name: 漏网之鱼
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Final.png
-    proxies: [节点选择, Smart选择, 自动选择, DIRECT, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换]
+    proxies: [节点选择, 自动选择, 负载均衡, DIRECT, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换]
 
   - name: 香港节点
     type: url-test
@@ -359,7 +326,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong"
     url: "http://www.gstatic.com/generate_204"
-    interval: 600
+    interval: 1200
     tolerance: 100
     lazy: true
     expected-status: 204
@@ -370,7 +337,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan"
     url: "http://www.gstatic.com/generate_204"
-    interval: 600
+    interval: 1200
     tolerance: 100
     lazy: true
     expected-status: 204
@@ -381,7 +348,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States"
     url: "http://www.gstatic.com/generate_204"
-    interval: 600
+    interval: 1200
     tolerance: 100
     lazy: true
     expected-status: 204
@@ -392,7 +359,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)台|新北|彰化|TW|Taiwan"
     url: "http://www.gstatic.com/generate_204"
-    interval: 600
+    interval: 1200
     tolerance: 100
     lazy: true
     expected-status: 204
@@ -403,7 +370,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)新加坡|坡|狮城|SG|Singapore"
     url: "http://www.gstatic.com/generate_204"
-    interval: 600
+    interval: 1200
     tolerance: 100
     lazy: true
     expected-status: 204
@@ -414,7 +381,7 @@ proxy-groups:
     include-all: true
     filter: "(?i)KR|Korea|KOR|首尔|韩|韓"
     url: "http://www.gstatic.com/generate_204"
-    interval: 600
+    interval: 1200
     tolerance: 100
     lazy: true
     expected-status: 204
@@ -432,7 +399,7 @@ rule-providers:
     behavior: domain
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"
     path: ./ruleset/private_domain.mrs
-    interval: 172800
+    interval: 604800
     format: mrs
 
   LocalAreaNetwork:
@@ -441,7 +408,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/LocalAreaNetwork.list"
     path: ./ruleset/LocalAreaNetwork.list
-    interval: 172800
+    interval: 604800
 
   UnBan:
     type: http
@@ -449,7 +416,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/UnBan.list"
     path: ./ruleset/UnBan.list
-    interval: 172800
+    interval: 604800
 
   BanAD:
     type: http
@@ -473,7 +440,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/GoogleFCM.list"
     path: ./ruleset/GoogleFCM.list
-    interval: 172800
+    interval: 604800
 
   GitHub:
     type: http
@@ -481,7 +448,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
     path: ./ruleset/github.mrs
-    interval: 172800
+    interval: 604800
 
   SteamCN:
     type: http
@@ -489,7 +456,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/SteamCN.list"
     path: ./ruleset/SteamCN.list
-    interval: 172800
+    interval: 604800
 
   AI-MIX:
     type: http
@@ -497,7 +464,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/AI.list"
     path: ./ruleset/AI.list
-    interval: 172800
+    interval: 604800
 
   Microsoft:
     type: http
@@ -505,7 +472,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"
     path: ./ruleset/microsoft.mrs
-    interval: 172800
+    interval: 604800
 
   Apple:
     type: http
@@ -513,7 +480,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"
     path: ./ruleset/apple.mrs
-    interval: 172800
+    interval: 604800
 
   Telegram:
     type: http
@@ -521,7 +488,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"
     path: ./ruleset/telegram.mrs
-    interval: 172800
+    interval: 604800
 
   Twitter:
     type: http
@@ -529,7 +496,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs"
     path: ./ruleset/twitter.mrs
-    interval: 172800
+    interval: 604800
 
   OpenAi:
     type: http
@@ -537,7 +504,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs"
     path: ./ruleset/openai.mrs
-    interval: 172800
+    interval: 604800
 
   NetEaseMusic:
     type: http
@@ -545,7 +512,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/NetEaseMusic.list"
     path: ./ruleset/NetEaseMusic.list
-    interval: 172800
+    interval: 604800
 
   Epic:
     type: http
@@ -553,7 +520,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"
     path: ./ruleset/epicgames.mrs
-    interval: 172800
+    interval: 604800
 
   Origin:
     type: http
@@ -561,7 +528,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"
     path: ./ruleset/origin.mrs
-    interval: 172800
+    interval: 604800
 
   Sony:
     type: http
@@ -569,7 +536,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/playstation.mrs"
     path: ./ruleset/playstation.mrs
-    interval: 172800
+    interval: 604800
 
   Steam:
     type: http
@@ -577,7 +544,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"
     path: ./ruleset/steam.mrs
-    interval: 172800
+    interval: 604800
 
   Nintendo:
     type: http
@@ -585,7 +552,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nintendo.mrs"
     path: ./ruleset/nintendo.mrs
-    interval: 172800
+    interval: 604800
 
   YouTube:
     type: http
@@ -593,7 +560,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"
     path: ./ruleset/youtube.mrs
-    interval: 172800
+    interval: 604800
 
   Netflix:
     type: http
@@ -601,7 +568,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"
     path: ./ruleset/netflix.mrs
-    interval: 172800
+    interval: 604800
 
   Bahamut:
     type: http
@@ -609,7 +576,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"
     path: ./ruleset/bahamut.mrs
-    interval: 172800
+    interval: 604800
 
   BilibiliHMT:
     type: http
@@ -617,7 +584,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"
     path: ./ruleset/biliintl.mrs
-    interval: 172800
+    interval: 604800
 
   Bilibili:
     type: http
@@ -625,7 +592,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.mrs"
     path: ./ruleset/bilibili.mrs
-    interval: 172800
+    interval: 604800
 
   ChinaMedia:
     type: http
@@ -633,7 +600,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-media-cn.mrs"
     path: ./ruleset/category-media-cn.mrs
-    interval: 172800
+    interval: 604800
 
   ProxyMedia:
     type: http
@@ -641,7 +608,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"
     path: ./ruleset/geolocation-!cn.mrs
-    interval: 172800
+    interval: 604800
 
   ProxyGFWlist:
     type: http
@@ -649,7 +616,7 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"
     path: ./ruleset/gfw.mrs
-    interval: 172800
+    interval: 604800
 
   ChinaCompanyIp:
     type: http
@@ -657,7 +624,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/ChinaCompanyIp.list"
     path: ./ruleset/ChinaCompanyIp.list
-    interval: 172800
+    interval: 604800
 
   Download:
     type: http
@@ -665,7 +632,7 @@ rule-providers:
     format: text
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Download.list"
     path: ./ruleset/Download.list
-    interval: 172800
+    interval: 604800
 
 # 规则配置（优化顺序：高频服务优先）
 rules:
