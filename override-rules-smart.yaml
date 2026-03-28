@@ -35,8 +35,8 @@ experimental:
 # 嗅探配置（Windows 端优化）
 sniffer:
   enable: true
-  parse-pure-ip: false
-  force-dns-mapping: false
+  parse-pure-ip: true
+  force-dns-mapping: true
   override-destination: true
   sniff:  # 嗅探协议配置
     HTTP:

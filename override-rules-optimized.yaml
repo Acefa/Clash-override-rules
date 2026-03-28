@@ -13,7 +13,7 @@ log-level: info
 find-process-mode: strict
 global-ua: clash.meta
 global-client-fingerprint: chrome
-keep-alive-idle: 600
+keep-alive-idle: 90
 keep-alive-interval: 15
 disable-keep-alive: false
 
@@ -27,8 +27,8 @@ experimental:
 # 嗅探配置
 sniffer:
   enable: true
-  parse-pure-ip: false
-  force-dns-mapping: false
+  parse-pure-ip: true
+  force-dns-mapping: true
   override-destination: true
   sniff:
     HTTP:
@@ -95,6 +95,7 @@ dns:
   fake-ip-range: 198.18.0.0/16
   fake-ip-filter-mode: blacklist
   cache-algorithm: arc
+  dns-cache-size: 4096
   fake-ip-filter:
     # 基础规则
     - "+.lan"
@@ -104,6 +105,16 @@ dns:
     - "+.msftncsi.com"
     - "time.*.com"
     - "ntp.*.com"
+    # AI 服务（实时性要求高，使用真实 IP）
+    - "+.volcengine.com"
+    - "+.volces.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
+    - "+.aliyuncs.com"
+    - "+.aliyun.com"
+    - "+.rjj.cc"
+    - "+.newcli.com"
+    - "+.openrouter.ai"
 
     # 泛域名规则（覆盖所有中国域名）
     - "+.cn"
