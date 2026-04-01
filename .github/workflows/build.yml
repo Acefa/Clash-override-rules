@@ -2,7 +2,8 @@ name: Build Executable
 
 on:
   push:
-    branches: [ main ]
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 jobs:
@@ -30,3 +31,10 @@ jobs:
       with:
         name: ClashConverter-Windows
         path: dist/ClashConverter.exe
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/ClashConverter.exe
+        generate_release_notes: true
