@@ -7,7 +7,7 @@ import sys
 import json
 
 # 导入转换逻辑
-from convert_subscription import (
+from clash_converter import (
     fetch_subscription, load_template, generate_config, save_config,
     parse_ss_url, parse_ssr_url, parse_vmess_url, parse_vless_url,
     parse_trojan_url, parse_hysteria_url, parse_tuic_url, parse_anytls_url
