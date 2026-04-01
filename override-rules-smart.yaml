@@ -13,8 +13,8 @@ log-level: info  # 日志级别：silent/error/warning/info/debug
 find-process-mode: strict  # 进程匹配模式：strict(严格) / off(关闭)
 global-ua: clash.meta  # 全局 User-Agent 标识
 global-client-fingerprint: chrome
-keep-alive-idle: 600
-keep-alive-interval: 15
+keep-alive-idle: 30
+keep-alive-interval: 10
 disable-keep-alive: false
 
 # Smart 内核配置 - 智能节点选择核心功能
@@ -41,11 +41,8 @@ sniffer:
   sniff:  # 嗅探协议配置
     HTTP:
       ports: [80, 8080-8090]  # HTTP 嗅探端口范围
-      override-destination: false
     TLS:
       ports: [443, 8443]  # HTTPS/TLS 嗅探端口
-    QUIC:
-      ports: [443, 8443]  # QUIC 协议嗅探端口
   force-domain:  # 强制对这些域名进行嗅探
     - "+.v2ex.com"
     - "+.github.io"
@@ -102,6 +99,9 @@ tun:
     - 10.0.0.0/8  # A 类私有地址
     - 172.16.0.0/12  # B 类私有地址
     - 127.0.0.0/8  # 本地回环地址
+  exclude-process:
+    - shandianshuo.exe
+    - LazyTyper.exe
 
 # DNS 优化配置（防泄漏）
 dns:
@@ -652,6 +652,20 @@ rule-providers:
 
 # 规则配置（优化顺序：高频服务优先）
 rules:
+  - PROCESS-NAME,shandianshuo.exe,DIRECT
+  - PROCESS-NAME,LazyTyper.exe,DIRECT
+  
+  # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,volces.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,rjj.cc,DIRECT
+  - DOMAIN-SUFFIX,newcli.com,DIRECT
+  - DOMAIN-SUFFIX,openrouter.ai,DIRECT
+  
   # 1. 局域网（最高优先级）- 本地网络直连
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve  # C 类私有地址，no-resolve 表示不解析域名
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve  # A 类私有地址
@@ -673,17 +687,6 @@ rules:
   - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
-
-  # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
-  - DOMAIN-SUFFIX,volcengine.com,DIRECT
-  - DOMAIN-SUFFIX,volces.com,DIRECT
-  - DOMAIN-SUFFIX,bytedance.com,DIRECT
-  - DOMAIN-SUFFIX,deepseek.com,DIRECT
-  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
-  - DOMAIN-SUFFIX,aliyun.com,DIRECT
-  - DOMAIN-SUFFIX,rjj.cc,DIRECT
-  - DOMAIN-SUFFIX,newcli.com,DIRECT
-  - DOMAIN-SUFFIX,openrouter.ai,DIRECT
 
   # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
   - RULE-SET,YouTube,油管视频

@@ -30,8 +30,8 @@ log-level: info  # 日志级别：silent/error/warning/info/debug
 find-process-mode: strict  # 进程匹配模式：strict(严格) / off(关闭)
 global-ua: clash.meta  # 全局 User-Agent 标识
 global-client-fingerprint: chrome
-keep-alive-idle: 600  # TCP keep-alive 空闲时间（秒）
-keep-alive-interval: 15  # TCP keep-alive 探测间隔（秒）
+keep-alive-idle: 30  # TCP keep-alive 空闲时间（秒）
+keep-alive-interval: 10  # TCP keep-alive 探测间隔（秒）
 disable-keep-alive: false  # 是否禁用 keep-alive
 
 profile:
@@ -50,10 +50,7 @@ sniffer:
   sniff:  # 嗅探协议配置
     HTTP:
       ports: [80, 8080-8090]
-      override-destination: false
     TLS:
-      ports: [443, 8443]
-    QUIC:
       ports: [443, 8443]
   force-domain:  # 强制对这些域名进行嗅探
     - "+.v2ex.com"
@@ -110,6 +107,9 @@ tun:
     - 10.0.0.0/8  # A 类私有地址
     - 172.16.0.0/12  # B 类私有地址
     - 127.0.0.0/8  # 本地回环地址
+  exclude-process:  # 排除的进程（不走 TUN）
+    - shandianshuo.exe  # 闪电说语音输入
+    - LazyTyper.exe  # LazyTyper
 
 # DNS 配置
 dns:
@@ -640,6 +640,19 @@ rule-providers:
 
 # 规则配置（优化顺序：高频服务优先）
 rules:
+  - PROCESS-NAME,shandianshuo.exe,DIRECT
+  - PROCESS-NAME,LazyTyper.exe,DIRECT
+  # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,volces.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,rjj.cc,DIRECT
+  - DOMAIN-SUFFIX,newcli.com,DIRECT
+  - DOMAIN-SUFFIX,openrouter.ai,DIRECT
+  
   # 1. 局域网（最高优先级）- 本地网络直连
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve  # C 类私有地址，no-resolve 表示不解析域名
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve  # A 类私有地址
