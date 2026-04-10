@@ -125,36 +125,47 @@ dns:
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
   nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
   nameserver-policy:
-    # 火山引擎专用（改用阿里 DNS，更快更稳定）
-    '+.volcengine.com': [223.5.5.5, 223.6.6.6]
-    '+.volces.com': [223.5.5.5, 223.6.6.6]
-    '+.bytedance.com': [223.5.5.5, 223.6.6.6]
-    # 其他 AI 服务
-    '+.deepseek.com': [223.5.5.5, 119.29.29.29]
-    '+.aliyuncs.com': [223.5.5.5, 223.6.6.6]
-    '+.aliyun.com': [223.5.5.5, 223.6.6.6]
-    '+.openrouter.ai': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    # 国内高频域名优先走加密国内 DNS，兼顾速度与隐私
+    '+.volcengine.com': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
+    '+.volces.com': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
+    '+.bytedance.com': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
+    '+.deepseek.com': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
+    '+.aliyuncs.com': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
+    '+.aliyun.com': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
+    '+.openrouter.ai': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
     # 国外服务
-    '+.youtube.com': [8.8.8.8, 8.8.4.4]
-    '+.googlevideo.com': [8.8.8.8, 8.8.4.4]
-    '+.google.com': [8.8.8.8, 8.8.4.4]
-    '+.gstatic.com': [8.8.8.8, 8.8.4.4]
-    'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    'geosite:gfw': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    'geosite:cn': [223.5.5.5, 119.29.29.29]
+    '+.youtube.com': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
+    '+.googlevideo.com': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
+    '+.google.com': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
+    '+.gstatic.com': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
+    'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
+    'geosite:gfw': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
+    'geosite:cn': [https://dns.alidns.com/dns-query, https://doh.pub/dns-query]
   fallback:
     - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
+    - https://dns.google/dns-query
   fallback-filter:
     geoip: true
     geoip-code: CN
+    geosite:
+      - gfw
+      - geolocation-!cn
     ipcidr:
       - 240.0.0.0/4
       - 0.0.0.0/32
+    domain:
+      - '+.google.com'
+      - '+.googlevideo.com'
+      - '+.gstatic.com'
+      - '+.youtube.com'
+      - '+.openrouter.ai'
 
 # 代理组配置
 proxy-groups:
