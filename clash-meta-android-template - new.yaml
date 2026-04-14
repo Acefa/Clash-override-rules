@@ -1,0 +1,785 @@
+# Clash Meta for Android 优化配置
+# 融合 Windows 版优点 + Android 端适配
+
+# 机场订阅
+proxy-providers:
+  Airport1:
+    url: "YOUR_SUBSCRIPTION_URL_HERE"
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 600
+    proxy: DIRECT
+
+# 节点信息
+proxies: []
+
+# 全局配置
+mixed-port: 7890
+allow-lan: false
+mode: rule
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+log-level: info
+global-ua: clash.meta
+global-client-fingerprint: chrome
+keep-alive-idle: 600
+keep-alive-interval: 15
+disable-keep-alive: false
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# 实验性功能
+experimental:
+  sniff-tls-sni: true
+
+# 嗅探配置
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080]  # 优化：缩小端口范围
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+
+  # 跳过嗅探（仅保留关键服务）
+  skip-domain:
+    # Apple 推送服务（关键）
+    - "+.push.apple.com"
+    - "+.apple.com"
+    # Google 推送长连接（兼容性关键）
+    - "mtalk.google.com"
+    - "alt1-mtalk.google.com"
+    - "alt2-mtalk.google.com"
+    - "alt3-mtalk.google.com"
+    - "alt4-mtalk.google.com"
+    - "alt5-mtalk.google.com"
+    - "alt6-mtalk.google.com"
+    - "alt7-mtalk.google.com"
+    - "alt8-mtalk.google.com"
+    # 移动支付（安全关键）
+    - "+.alipay.com"
+    - "+.alipayobjects.com"
+    - "+.wechat.com"
+    - "+.weixin.qq.com"
+    # 银行应用（安全关键）
+    - "+.icbc.com.cn"
+    - "+.ccb.com.cn"
+    - "+.boc.cn"
+    - "+.abchina.com"
+
+  skip-dst-address:
+    - 91.105.192.0/23
+    - 91.108.4.0/22
+    - 91.108.8.0/21
+    - 91.108.16.0/21
+    - 91.108.56.0/22
+    - 95.161.64.0/20
+    - 149.154.160.0/20
+    - 185.76.151.0/24
+    - 2001:67c:4e8::/48
+    - 2001:b28:f23c::/47
+    - 2001:b28:f23f::/48
+    - 2a0a:f280:203::/48
+
+# TUN 配置
+tun:
+  enable: true
+  stack: mixed
+  device: Mihomo
+  mtu: 1400
+  dns-hijack:
+    - "any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  strict-route: false
+  route-exclude-address:
+    - 192.168.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 127.0.0.0/8
+
+# DNS 配置
+dns:
+  enable: true
+  listen: 127.0.0.1:1053
+  ipv6: false  # 启用 IPv6 DNS 劫持
+  respect-rules: true
+  cache-algorithm: arc
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.0/16
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - "+.lan"
+    - "+.local"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+    - "ntp.*.com"
+    - "+.icbc.com.cn"
+    - "+.ccb.com.cn"
+    - "+.boc.cn"
+    - "+.abchina.com"
+    - "+.alipay.com"
+    - "+.wechat.com"
+    - "+.weixin.qq.com"
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver-policy:
+    'geosite:geolocation-!cn': "https://1.1.1.1/dns-query#节点选择"
+    'geosite:gfw': "https://8.8.8.8/dns-query#节点选择"
+    '+.volces.com': [223.5.5.5, 119.29.29.29]
+    'geosite:cn': [223.5.5.5, 119.29.29.29]
+  fallback:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
+
+# 代理组配置
+proxy-groups:
+  - name: 节点选择
+    type: select
+    proxies:
+      - 自动选择
+      - 负载均衡
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
+
+  - name: 手动切换
+    include-all: true
+    type: select
+
+  - name: 自动选择
+    type: url-test
+    include-all: true
+    url: http://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 负载均衡
+    type: load-balance
+    strategy: round-robin
+    include-all: true
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    lazy: true
+    expected-status: 204
+
+  - name: 电报消息
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - 狮城节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
+
+  - name: X平台
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - 美国节点
+      - 日本节点
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: OpenAi
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - AI-UNHK
+      - 狮城节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
+
+  - name: AI-UNHK
+    type: select
+    include-all: true
+    exclude-filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - 狮城节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: 油管视频
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: 奈飞视频
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - 奈飞节点
+      - 狮城节点
+      - 香港节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: 巴哈姆特
+    type: select
+    proxies:
+      - 台湾节点
+      - 节点选择
+      - 手动切换
+      - DIRECT
+
+  - name: 国外媒体
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: 国内媒体
+    type: select
+    proxies:
+      - DIRECT
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 手动切换
+
+  - name: 谷歌FCM
+    type: select
+    proxies:
+      - 香港节点
+      - 狮城节点
+      - 节点选择
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: 谷歌下载
+    type: select
+    proxies:
+      - 自动选择
+      - 狮城节点
+      - 美国节点
+      - 日本节点
+      - 台湾节点
+      - 香港节点
+      - 节点选择
+      - 韩国节点
+      - 手动切换
+      - DIRECT
+
+  - name: 微软云盘
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 韩国节点
+      - 手动切换
+
+  - name: 苹果服务
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 韩国节点
+      - 手动切换
+
+  - name: 游戏平台
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 美国节点
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 韩国节点
+      - 手动切换
+
+  - name: 全球直连
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+      - 自动选择
+
+  - name: 广告拦截
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+
+  - name: 应用净化
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+
+  - name: 漏网之鱼
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 负载均衡
+      - DIRECT
+      - 香港节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 手动切换
+
+  - name: 香港节点
+    include-all: true
+    filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 日本节点
+    include-all: true
+    filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 美国节点
+    include-all: true
+    filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 台湾节点
+    include-all: true
+    filter: (?i)台|新北|彰化|TW|Taiwan
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 狮城节点
+    include-all: true
+    filter: (?i)新加坡|坡|狮城|SG|Singapore
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 韩国节点
+    include-all: true
+    filter: (?i)KR|Korea|KOR|首尔|韩|韓
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 1800
+    tolerance: 50
+    lazy: true
+    expected-status: 204
+
+  - name: 奈飞节点
+    include-all: true
+    filter: (?i)NF|奈飞|解锁|Netflix|NETFLIX|Media
+    type: select
+
+  - name: GLOBAL
+    include-all: true
+    type: select
+    proxies:
+      - 节点选择
+      - 手动切换
+      - 自动选择
+      - 负载均衡
+      - 电报消息
+      - X平台
+      - OpenAi
+      - AI-UNHK
+      - 油管视频
+      - 奈飞视频
+      - 国外媒体
+      - 国内媒体
+      - 谷歌FCM
+      - 谷歌下载
+      - 微软云盘
+      - 苹果服务
+      - 游戏平台
+      - 全球直连
+      - 广告拦截
+      - 应用净化
+      - 漏网之鱼
+      - 香港节点
+      - 日本节点
+      - 美国节点
+      - 台湾节点
+      - 狮城节点
+      - 韩国节点
+      - 奈飞节点
+
+# 规则提供者
+rule-providers:
+  private_domain:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"
+    path: ./ruleset/private_domain.mrs
+    interval: 604800
+    format: mrs
+
+  LocalAreaNetwork:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"
+    path: ./ruleset/LocalAreaNetwork.list
+    interval: 604800
+
+  UnBan:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list"
+    path: ./ruleset/UnBan.list
+    interval: 604800
+
+  GoogleCNProxyIP:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleCNProxyIP.list"
+    path: ./ruleset/GoogleCNProxyIP.list
+    interval: 604800
+
+  ChinaDomain:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+    path: ./ruleset/ChinaDomain.list
+    interval: 604800
+
+  ChinaMedia:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list"
+    path: ./ruleset/ChinaMedia.list
+    interval: 604800
+
+  BanAD:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list"
+    path: ./ruleset/BanAD.list
+    interval: 172800
+
+  BanProgramAD:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list"
+    path: ./ruleset/BanProgramAD.list
+    interval: 172800
+
+  ChinaCompanyIp:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list"
+    path: ./ruleset/ChinaCompanyIp.list
+    interval: 604800
+
+  ChinaIp:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaIp.list"
+    path: ./ruleset/ChinaIp.list
+    interval: 604800
+
+  GitHub:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
+    path: ./ruleset/github.mrs
+    interval: 604800
+
+  AI-MIX:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/AI.list"
+    path: ./ruleset/AI.list
+    interval: 604800
+
+  Telegram:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"
+    path: ./ruleset/telegram.mrs
+    interval: 604800
+
+  Twitter:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs"
+    path: ./ruleset/twitter.mrs
+    interval: 604800
+
+  OpenAi:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.mrs"
+    path: ./ruleset/openai.mrs
+    interval: 604800
+
+  YouTube:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"
+    path: ./ruleset/youtube.mrs
+    interval: 604800
+
+  Microsoft:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"
+    path: ./ruleset/microsoft.mrs
+    interval: 604800
+
+  Bing:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bing.mrs"
+    path: ./ruleset/bing.mrs
+    interval: 604800
+
+  OneDrive:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/onedrive.mrs"
+    path: ./ruleset/onedrive.mrs
+    interval: 604800
+
+  Apple:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs"
+    path: ./ruleset/apple.mrs
+    interval: 604800
+
+  GoogleFCM:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/GoogleFCM.list"
+    path: ./ruleset/GoogleFCM.list
+    interval: 604800
+
+  ProxyMedia:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"
+    path: ./ruleset/geolocation-!cn.mrs
+    interval: 604800
+
+  ProxyGFWlist:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"
+    path: ./ruleset/gfw.mrs
+    interval: 604800
+
+  Download:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Download.list"
+    path: ./ruleset/Download.list
+    interval: 604800
+
+# 规则配置
+rules:
+
+  # 1. 局域网直连
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR,240.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+  - IP-CIDR6,fd00::/8,DIRECT,no-resolve
+
+  # 2. 广告拦截
+  - RULE-SET,BanAD,广告拦截
+  - RULE-SET,BanProgramAD,应用净化
+
+  # 3. 基础规则（防 DNS 泄漏）
+  - RULE-SET,private_domain,全球直连
+  - RULE-SET,LocalAreaNetwork,全球直连
+  - RULE-SET,UnBan,全球直连
+
+  # 4. Google 服务（防 DNS 泄漏）
+  - DOMAIN-SUFFIX,services.googleapis.cn,节点选择
+  - RULE-SET,GoogleCNProxyIP,节点选择
+
+  # 5. 高频国内服务
+
+  - RULE-SET,ChinaDomain,全球直连
+  - RULE-SET,ChinaMedia,国内媒体
+
+  # 6. 高频国外服务
+  - RULE-SET,YouTube,油管视频
+  - RULE-SET,Twitter,X平台
+  - RULE-SET,Telegram,电报消息
+  - RULE-SET,GitHub,节点选择
+
+  # 7. AI 服务
+  - RULE-SET,AI-MIX,AI-UNHK
+  - RULE-SET,OpenAi,OpenAi
+
+  # 8. 常用服务
+  - RULE-SET,OneDrive,微软云盘
+  - RULE-SET,Apple,苹果服务
+
+  # 9. 低频服务
+  - RULE-SET,GoogleFCM,谷歌FCM
+  - RULE-SET,ProxyMedia,国外媒体
+  - RULE-SET,ProxyGFWlist,节点选择
+  - RULE-SET,Download,全球直连
+
+  # 10. 国内 IP（防 DNS 泄漏）
+  - RULE-SET,ChinaCompanyIp,全球直连
+  - RULE-SET,ChinaIp,全球直连,no-resolve
+
+  # 11. 兜底规则
+  - GEOSITE,cn,全球直连
+  - GEOIP,CN,全球直连,no-resolve
+  - MATCH,漏网之鱼
+
+# GEO 数据自动更新
+geo-auto-update: true  # 启用 GEO 数据自动更新
+geo-update-interval: 48  # 更新间隔（小时）
+geodata-mode: true  # 使用 GEO 数据模式
+geox-url:  # GEO 数据下载地址
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"

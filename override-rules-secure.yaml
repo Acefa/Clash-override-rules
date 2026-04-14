@@ -1,49 +1,46 @@
-# Clash Party 覆写规则 - 专家优化版
-# 网络安全 + 性能优化 + 稳定性增强
+# Clash Party 覆写规则 - 高安全性 DNS 优化版
+# 核心目标：DNS 防泄漏 + 抗污染 + 加密传输
 
 # 全局配置优化
-mixed-port: 7890  # 混合端口，同时支持 HTTP(S) 和 SOCKS5 协议
-allow-lan: false  # 禁止局域网连接，仅本机可用，提高安全性
-bind-address: "127.0.0.1"  # 绑定到本地回环地址，只允许本机访问
-mode: rule  # 运行模式：rule(规则模式) / global(全局代理) / direct(全局直连)
-ipv6: false  # 统一关闭 IPv6，避免 DNS 泄漏
-unified-delay: true  # 统一延迟测试，更准确的节点延迟
-tcp-concurrent: true  # TCP 并发连接，提升多连接场景性能
-log-level: info  # 日志级别：silent/error/warning/info/debug
-find-process-mode: strict  # 进程匹配模式：strict(严格) / off(关闭)
-global-ua: clash.meta  # 全局 User-Agent 标识
-global-client-fingerprint: chrome  # 客户端指纹：chrome/firefox/safari/ios/android/edge/360/qq/random
-keep-alive-idle: 30  # TCP keep-alive 空闲时间（秒）
-keep-alive-interval: 10  # TCP keep-alive 探测间隔（秒）
-disable-keep-alive: false  # 是否禁用 keep-alive
+mixed-port: 7890
+allow-lan: false
+bind-address: "127.0.0.1"
+mode: rule
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+log-level: info
+find-process-mode: strict
+global-ua: clash.meta
+global-client-fingerprint: chrome
+keep-alive-idle: 30
+keep-alive-interval: 10
+disable-keep-alive: false
 
 profile:
-  store-selected: true  # 存储选择的节点，重启后自动选择上次使用的节点
-  store-fake-ip: true  # 持久化 fake-ip 映射表
+  store-selected: true
+  store-fake-ip: true
 
 experimental:
-  sniff-tls-sni: true  # 嗅探 TLS SNI 域名
+  sniff-tls-sni: true
 
-# 嗅探配置（Windows 端优化）
+# 嗅探配置
 sniffer:
   enable: true
-  sniff:  # 嗅探协议配置
+  sniff:
     HTTP:
-      ports: [80, 8080-8090]  # HTTP 嗅探端口范围
+      ports: [80, 8080-8090]
       override-destination: true
     TLS:
-      ports: [443, 8443]  # HTTPS/TLS 嗅探端口
-  skip-domain:  # 跳过嗅探的域名（直接使用原始请求）
-    # Windows 系统服务
+      ports: [443, 8443]
+  skip-domain:
     - "+.microsoft.com"
     - "+.windows.com"
     - "+.windowsupdate.com"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
-    # Apple 服务
     - "+.push.apple.com"
     - "+.apple.com"
-    # 金融安全
     - "+.alipay.com"
     - "+.alipayobjects.com"
     - "+.wechat.com"
@@ -52,9 +49,7 @@ sniffer:
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
-
-
-  skip-dst-address:  # 跳过嗅探的目标 IP 地址段（Telegram IP 段）
+  skip-dst-address:
     - 91.105.192.0/23
     - 91.108.4.0/22
     - 91.108.8.0/21
@@ -68,34 +63,42 @@ sniffer:
     - 2001:b28:f23f::/48
     - 2a0a:f280:203::/48
 
-# TUN 配置（兼容性优化）
+# TUN 配置
 tun:
-  enable: true  # 启用 TUN 模式，接管系统流量
-  stack: system  # 协议栈模式：system/gvisor/mixed，mixed 兼容性最好
-  device: Mihomo  # 虚拟网卡名称
-  mtu: 1500  # 最大传输单元
-  dns-hijack:  # DNS 劫持配置
-    - "any:53"  # 劫持所有 53 端口的 DNS 请求
-  auto-route: true  # 自动配置路由表
-  auto-redirect: true  # 自动配置 iptables/nftables 重定向
-  auto-detect-interface: true  # 自动检测出站网卡
-  strict-route: true  # 严格路由模式，确保所有流量都经过 TUN
-  route-exclude-address:  # 排除的路由地址段（不走代理）
-    - 192.168.0.0/16  # C 类私有地址
-    - 10.0.0.0/8  # A 类私有地址
-    - 172.16.0.0/12  # B 类私有地址
-    - 127.0.0.0/8  # 本地回环地址
+  enable: true
+  stack: system
+  device: Mihomo
+  mtu: 1500
+  dns-hijack:
+    - "any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  strict-route: true
+  route-exclude-address:
+    - 192.168.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 127.0.0.0/8
 
-# DNS 优化配置（防泄漏）
+# ==================== DNS 高安全性配置 ====================
 dns:
   enable: true
   listen: 127.0.0.1:1053
   ipv6: false
+
+  # 核心安全：DNS 请求遵循路由规则，防止泄漏
   respect-rules: true
+
+  # 增强模式：fake-ip 防止 DNS 污染和泄漏
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.0/16
   fake-ip-filter-mode: blacklist
+
+  # 缓存优化：使用 ARC 算法 + 大小限制
   cache-algorithm: arc
+
+  # Fake-IP 过滤：避免局域网/国内服务使用 fake-ip
   fake-ip-filter:
     - "+.lan"
     - "+.local"
@@ -120,37 +123,81 @@ dns:
     - "+.jd.com"
     - "+.cn"
     - "+.com.cn"
+
+  # ========== 第一层：用于解析 DoH/DoT 域名的 nameserver ==========
+  # 必须使用 IP 地址，避免循环依赖
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
+    - 2402:4e00::
+    - 2400:3200::1
+
+  # ========== 第二层：代理服务器域名解析 ==========
+  # 解析节点域名时使用，确保节点连接正常
   proxy-server-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    - https://223.5.5.5/dns-query
+    - https://120.53.53.53/dns-query
+
+  # ========== 第三层：主 nameserver（遵循 respect-rules） ==========
+  # 优先使用加密 DNS，防止中间人攻击和 DNS 污染
   nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    # 阿里 DoH（国内最快）
+    - https://223.5.5.5/dns-query
+    - https://223.6.6.6/dns-query
+    # 腾讯 DoH
+    - https://120.53.53.53/dns-query
+    - https://1.12.12.12/dns-query
+
+  # ========== 第四层：域名策略路由（精细化控制） ==========
   nameserver-policy:
-    # 火山引擎专用（改用阿里 DNS，更快更稳定）
-    '+.volcengine.com': [223.5.5.5, 223.6.6.6]
-    '+.volces.com': [223.5.5.5, 223.6.6.6]
-    '+.bytedance.com': [223.5.5.5, 223.6.6.6]
-    # 其他 AI 服务
-    '+.deepseek.com': [223.5.5.5, 119.29.29.29]
-    '+.aliyuncs.com': [223.5.5.5, 223.6.6.6]
-    '+.aliyun.com': [223.5.5.5, 223.6.6.6]
+    # 国内服务：使用阿里/腾讯 DoH（加密+快速）
+    'geosite:cn':
+      - https://223.5.5.5/dns-query
+      - https://223.6.6.6/dns-query
+
+    # 火山引擎/字节服务
+    '+.volcengine.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
+    '+.volces.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
+    '+.bytedance.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
+
+    # AI 服务：国内 AI 用阿里，国外 AI 用加密 DNS
+    '+.deepseek.com': [https://223.5.5.5/dns-query, https://120.53.53.53/dns-query]
+    '+.aliyuncs.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
+    '+.aliyun.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
+
+    # 国外 AI 服务：使用 Cloudflare/Google DoH（加密防审查）
     '+.openrouter.ai': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    # 国外服务
-    '+.youtube.com': [8.8.8.8, 8.8.4.4]
-    '+.googlevideo.com': [8.8.8.8, 8.8.4.4]
-    '+.google.com': [8.8.8.8, 8.8.4.4]
-    '+.gstatic.com': [8.8.8.8, 8.8.4.4]
+    '+.openai.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.anthropic.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.claude.ai': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.chatgpt.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+
+    # 国外流媒体/服务：使用 Cloudflare/Google DoH
+    '+.youtube.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.googlevideo.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.google.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.gstatic.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.googleapis.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.github.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+    '+.githubusercontent.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
+
+    # GFW 列表和国外站点
     'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
     'geosite:gfw': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.rjj.cc': [223.5.5.5, 119.29.29.29]
-    'geosite:cn': [223.5.5.5, 119.29.29.29]
+
+  # ========== 第五层：Fallback 安全网 ==========
+  # 当主 nameserver 无法解析时使用（通常是国内解析国外域名失败）
   fallback:
+    # Cloudflare DoH（主）
     - https://1.1.1.1/dns-query
+    # Cloudflare DoH（备）
+    - https://1.0.0.1/dns-query
+    # Google DoH（备）
     - https://8.8.8.8/dns-query
+    # Quad9 DoH（安全 DNS，防恶意域名）
+    - https://9.9.9.9/dns-query
+
+  # Fallback 触发条件
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -158,17 +205,17 @@ dns:
       - 240.0.0.0/4
       - 0.0.0.0/32
 
-# 代理组配置（性能优化）
+# 代理组配置（保持不变）
 proxy-groups:
-  - name: 节点选择  # 代理组名称
-    type: select  # 类型：select(手动选择) / url-test(自动测速) / fallback(故障转移) / load-balance(负载均衡)
+  - name: 节点选择
+    type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
     proxies: [自动选择, 负载均衡, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 手动切换
-    type: select  # 手动选择模式
+    type: select
     icon: https://testingcf.jsdelivr.net/gh/shindgewongxj/WHATSINStash@master/icon/select.png
-    include-all: true  # 包含所有订阅节点
+    include-all: true
 
   - name: 自动选择
     type: url-test
@@ -245,7 +292,7 @@ proxy-groups:
   - name: 谷歌FCM
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
-    proxies: [节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]  # 防泄漏：默认走代理
+    proxies: [节点选择, 美国节点, 台湾节点, 狮城节点, 日本节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: 微软Bing
     type: select
@@ -428,7 +475,15 @@ rule-providers:
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
     path: ./ruleset/github.mrs
     interval: 604800
-
+    
+  GoogleCNProxyIP:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleCNProxyIP.list"
+    path: ./ruleset/GoogleCNProxyIP.list
+    interval: 604800
+    
   SteamCN:
     type: http
     behavior: classical
@@ -613,10 +668,10 @@ rule-providers:
     path: ./ruleset/Download.list
     interval: 604800
 
-# 规则配置（优化顺序：高频服务优先）
+# 规则配置
 rules:
-
-  # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
+  - PROCESS-NAME,shandianshuo.exe,DIRECT
+  - PROCESS-NAME,LazyTyper.exe,DIRECT
   - DOMAIN-SUFFIX,volcengine.com,DIRECT
   - DOMAIN-SUFFIX,volces.com,DIRECT
   - DOMAIN-SUFFIX,bytedance.com,DIRECT
@@ -626,54 +681,47 @@ rules:
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
   - DOMAIN-SUFFIX,newcli.com,DIRECT
   - DOMAIN-SUFFIX,openrouter.ai,DIRECT
-  
-  # 1. 局域网（最高优先级）- 本地网络直连
-  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve  # C 类私有地址，no-resolve 表示不解析域名
-  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve  # A 类私有地址
-  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve  # B 类私有地址
-  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve  # 本地回环地址
-  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve  # 运营商级 NAT
-  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve  # 组播地址
-  - IP-CIDR,240.0.0.0/4,DIRECT,no-resolve  # 保留地址
-  - IP-CIDR6,::1/128,DIRECT,no-resolve  # IPv6 回环地址
-  - IP-CIDR6,fc00::/7,DIRECT,no-resolve  # IPv6 唯一本地地址
-  - IP-CIDR6,fe80::/10,DIRECT,no-resolve  # IPv6 链路本地地址
-  - IP-CIDR6,fd00::/8,DIRECT,no-resolve  # IPv6 私有地址
 
-  # 2. 广告拦截（减少无效请求）
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR,240.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+  - IP-CIDR6,fd00::/8,DIRECT,no-resolve
+
   - RULE-SET,BanAD,广告拦截
   - RULE-SET,BanProgramAD,应用净化
 
-  # 3. 基础规则
   - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
-
-
-  # 5. 高频国外服务（YouTube、Twitter、Telegram、GitHub）
+  
+  - DOMAIN-SUFFIX,services.googleapis.cn,节点选择
+  - RULE-SET,GoogleCNProxyIP,节点选择
   - RULE-SET,YouTube,油管视频
   - RULE-SET,Twitter,X平台
   - RULE-SET,Telegram,电报消息
   - RULE-SET,GitHub,节点选择
 
-  # 4. 高频国内服务（微信、抖音、小红书、B站等）
 
   - RULE-SET,BilibiliHMT,哔哩哔哩
   - RULE-SET,Bilibili,哔哩哔哩
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
 
-  # 6. AI 服务
   - RULE-SET,AI-MIX,AI-UNHK
   - RULE-SET,OpenAi,OpenAi
 
-  # 7. 常用服务
   - RULE-SET,Microsoft,微软服务
   - RULE-SET,Apple,苹果服务
   - RULE-SET,Netflix,奈飞视频
   - RULE-SET,Bahamut,巴哈姆特
 
-  # 8. 低频服务
   - RULE-SET,GoogleFCM,谷歌FCM
   - RULE-SET,NetEaseMusic,网易音乐
   - RULE-SET,Epic,游戏平台
@@ -685,17 +733,15 @@ rules:
   - RULE-SET,ProxyGFWlist,节点选择
   - RULE-SET,ChinaCompanyIp,全球直连,no-resolve
   - RULE-SET,Download,全球直连
-
-  # 9. 兜底规则
-  - GEOSITE,cn,全球直连  # geosite:cn 覆盖所有国内域名，提前命中加速直连
-  - GEOIP,CN,全球直连,no-resolve  # GEOIP 匹配中国 IP
-  - MATCH,漏网之鱼  # MATCH 匹配所有未匹配的流量
+  - GEOSITE,cn,全球直连
+  - GEOIP,CN,全球直连,no-resolve
+  - MATCH,漏网之鱼
 
 # GEO 数据自动更新
-geo-auto-update: true  # 启用 GEO 数据自动更新
-geo-update-interval: 48  # 更新间隔（小时）
-geodata-mode: true  # 使用 GEO 数据模式
-geox-url:  # GEO 数据下载地址
+geo-auto-update: true
+geo-update-interval: 48
+geodata-mode: true
+geox-url:
   geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat"
   geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
   mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb"

@@ -84,9 +84,6 @@ tun:
     - 10.0.0.0/8
     - 172.16.0.0/12
     - 127.0.0.0/8
-  exclude-process:
-    - shandianshuo.exe
-    - LazyTyper.exe
 
 # DNS 优化配置（简化冗余）
 dns:
@@ -578,8 +575,6 @@ rule-providers:
 
 # 规则配置（优化顺序：减少匹配次数）
 rules:
-  - PROCESS-NAME,shandianshuo.exe,DIRECT
-  - PROCESS-NAME,LazyTyper.exe,DIRECT
   
   # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
   - DOMAIN-SUFFIX,volcengine.com,DIRECT
@@ -615,7 +610,7 @@ rules:
   - RULE-SET,UnBan,全球直连
 
   # 4. 国内流量直连（提前到高优先级，减少后续匹配）
-  - RULE-SET,ChinaDomain,油管视频
+  - RULE-SET,ChinaDomain,全球直连
 
   # 5. 国外高频服务
   - DOMAIN-SUFFIX,services.googleapis.cn,节点选择
@@ -626,7 +621,7 @@ rules:
   - RULE-SET,GitHub,节点选择
 
   # 6. 国内媒体
-  - RULE-SET,ChinaMedia,国内媒体
+  - RULE-SET,ChinaMedia,全球直连
 
   # 7. AI 服务
   - RULE-SET,AI-MIX,AI-UNHK
