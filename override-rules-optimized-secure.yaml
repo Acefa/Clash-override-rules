@@ -1,12 +1,12 @@
-# Clash Party 覆写规则 - 高安全性 DNS 优化版
-# 核心目标：DNS 防泄漏 + 抗污染 + 加密传输
+# Clash Party 覆写规则 - 性能优化版
+# 基于第一性原理优化：减少规则匹配次数 + 简化 DNS 配置
 
 # 全局配置优化
 mixed-port: 7890
 allow-lan: false
 bind-address: "127.0.0.1"
 mode: rule
-ipv6: false
+ipv6: false  # 统一关闭 IPv6，避免 DNS 泄漏
 unified-delay: true
 tcp-concurrent: true
 log-level: info
@@ -34,13 +34,7 @@ sniffer:
     TLS:
       ports: [443, 8443]
   skip-domain:
-    - "+.microsoft.com"
-    - "+.windows.com"
-    - "+.windowsupdate.com"
-    - "+.msftconnecttest.com"
-    - "+.msftncsi.com"
-    - "+.push.apple.com"
-    - "+.apple.com"
+    # 金融安全
     - "+.alipay.com"
     - "+.alipayobjects.com"
     - "+.wechat.com"
@@ -49,6 +43,16 @@ sniffer:
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
+    # AI 服务（实时性要求高，使用真实 IP）
+    - "+.volcengine.com"
+    - "+.volces.com"
+    - "+.bytedance.com"
+    - "+.deepseek.com"
+    - "+.aliyuncs.com"
+    - "+.aliyun.com"
+    - "+.rjj.cc"
+    - "+.newcli.com"
+    - "+.openrouter.ai"
   skip-dst-address:
     - 91.105.192.0/23
     - 91.108.4.0/22
@@ -204,8 +208,8 @@ dns:
     ipcidr:
       - 240.0.0.0/4
       - 0.0.0.0/32
-
-# 代理组配置（保持不变）
+      
+# 代理组配置
 proxy-groups:
   - name: 节点选择
     type: select
@@ -459,7 +463,31 @@ rule-providers:
     url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/BanProgramAD.list"
     path: ./ruleset/BanProgramAD.list
     interval: 172800
-
+    
+  GoogleCNProxyIP:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleCNProxyIP.list"
+    path: ./ruleset/GoogleCNProxyIP.list
+    interval: 604800
+    
+  ChinaDomain:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list"
+    path: ./ruleset/ChinaDomain.list
+    interval: 604800    
+  
+  ChinaIp:
+    type: http
+    behavior: classical
+    format: text
+    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaIp.list"
+    path: ./ruleset/ChinaIp.list
+    interval: 604800    
+    
   GoogleFCM:
     type: http
     behavior: classical
@@ -474,22 +502,6 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"
     path: ./ruleset/github.mrs
-    interval: 604800
-    
-  GoogleCNProxyIP:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/GoogleCNProxyIP.list"
-    path: ./ruleset/GoogleCNProxyIP.list
-    interval: 604800
-    
-  SteamCN:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/SteamCN.list"
-    path: ./ruleset/SteamCN.list
     interval: 604800
 
   AI-MIX:
@@ -540,54 +552,6 @@ rule-providers:
     path: ./ruleset/openai.mrs
     interval: 604800
 
-  NetEaseMusic:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/NetEaseMusic.list"
-    path: ./ruleset/NetEaseMusic.list
-    interval: 604800
-
-  Epic:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"
-    path: ./ruleset/epicgames.mrs
-    interval: 604800
-
-  Origin:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/origin.mrs"
-    path: ./ruleset/origin.mrs
-    interval: 604800
-
-  Sony:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/playstation.mrs"
-    path: ./ruleset/playstation.mrs
-    interval: 604800
-
-  Steam:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs"
-    path: ./ruleset/steam.mrs
-    interval: 604800
-
-  Nintendo:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nintendo.mrs"
-    path: ./ruleset/nintendo.mrs
-    interval: 604800
-
   YouTube:
     type: http
     behavior: domain
@@ -610,22 +574,6 @@ rule-providers:
     format: mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"
     path: ./ruleset/bahamut.mrs
-    interval: 604800
-
-  BilibiliHMT:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/biliintl.mrs"
-    path: ./ruleset/biliintl.mrs
-    interval: 604800
-
-  Bilibili:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bilibili.mrs"
-    path: ./ruleset/bilibili.mrs
     interval: 604800
 
   ChinaMedia:
@@ -668,8 +616,10 @@ rule-providers:
     path: ./ruleset/Download.list
     interval: 604800
 
-# 规则配置
+# 规则配置（优化顺序：减少匹配次数）
 rules:
+  
+  # 4. 火山引擎优化（流式语音识别）- 必须在 GEOSITE,cn 之前
   - DOMAIN-SUFFIX,volcengine.com,DIRECT
   - DOMAIN-SUFFIX,volces.com,DIRECT
   - DOMAIN-SUFFIX,bytedance.com,DIRECT
@@ -679,7 +629,8 @@ rules:
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
   - DOMAIN-SUFFIX,newcli.com,DIRECT
   - DOMAIN-SUFFIX,openrouter.ai,DIRECT
-
+  
+  # 1. 局域网直连（最高优先级）
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
@@ -692,13 +643,19 @@ rules:
   - IP-CIDR6,fe80::/10,DIRECT,no-resolve
   - IP-CIDR6,fd00::/8,DIRECT,no-resolve
 
+  # 2. 广告拦截
   - RULE-SET,BanAD,广告拦截
   - RULE-SET,BanProgramAD,应用净化
 
+  # 3. 基础规则
   - RULE-SET,private_domain,全球直连
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
-  
+
+  # 4. 国内流量直连（提前到高优先级，减少后续匹配）
+  - RULE-SET,ChinaDomain,全球直连
+
+  # 5. 国外高频服务
   - DOMAIN-SUFFIX,services.googleapis.cn,节点选择
   - RULE-SET,GoogleCNProxyIP,节点选择
   - RULE-SET,YouTube,油管视频
@@ -706,31 +663,28 @@ rules:
   - RULE-SET,Telegram,电报消息
   - RULE-SET,GitHub,节点选择
 
+  # 6. 国内媒体
+  - RULE-SET,ChinaMedia,全球直连
 
-  - RULE-SET,BilibiliHMT,哔哩哔哩
-  - RULE-SET,Bilibili,哔哩哔哩
-  - RULE-SET,ChinaMedia,国内媒体
-  - RULE-SET,SteamCN,全球直连
-
+  # 7. AI 服务
   - RULE-SET,AI-MIX,AI-UNHK
   - RULE-SET,OpenAi,OpenAi
 
+  # 8. 常用服务
   - RULE-SET,Microsoft,微软服务
   - RULE-SET,Apple,苹果服务
   - RULE-SET,Netflix,奈飞视频
   - RULE-SET,Bahamut,巴哈姆特
 
+  # 9. 低频服务
   - RULE-SET,GoogleFCM,谷歌FCM
-  - RULE-SET,NetEaseMusic,网易音乐
-  - RULE-SET,Epic,游戏平台
-  - RULE-SET,Origin,游戏平台
-  - RULE-SET,Sony,游戏平台
-  - RULE-SET,Steam,游戏平台
-  - RULE-SET,Nintendo,游戏平台
   - RULE-SET,ProxyMedia,国外媒体
   - RULE-SET,ProxyGFWlist,节点选择
+  - RULE-SET,ChinaIp,全球直连
   - RULE-SET,ChinaCompanyIp,全球直连,no-resolve
   - RULE-SET,Download,全球直连
+
+  # 10. 兜底规则
   - GEOSITE,cn,全球直连
   - GEOIP,CN,全球直连,no-resolve
   - MATCH,漏网之鱼
