@@ -259,7 +259,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     include-all: true
     exclude-filter: "(?i)港|HK|hk|Hong Kong|HongKong|hongkong"
-    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [美国节点, 日本节点, 狮城节点, 台湾节点, 韩国节点, 手动切换, 节点选择, 自动选择]
 
   - name: 油管视频
     type: select
@@ -526,6 +526,22 @@ rule-providers:
     path: ./ruleset/twitter.mrs
     interval: 604800
 
+  AI-Global:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs"
+    path: ./ruleset/category-ai-!cn.mrs
+    interval: 604800
+
+  AI-CN:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-cn.mrs"
+    path: ./ruleset/category-ai-cn.mrs
+    interval: 604800
+
   OpenAi:
     type: http
     behavior: domain
@@ -692,58 +708,18 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
   
-  # AI 核心服务：强制走 AI服务，避免误直连和误分流
-  - DOMAIN-SUFFIX,anthropic.com,AI服务
-  - DOMAIN-SUFFIX,claude.ai,AI服务
-  - DOMAIN-SUFFIX,claude.com,AI服务
-  - DOMAIN-SUFFIX,claudeusercontent.com,AI服务
+  # AI 国内服务：保持直连，避免海外代理影响国内 AI 可用性
+  - RULE-SET,AI-CN,全球直连
+
+  # AI 明确高敏服务：手写前置，避免误直连和误分流
   - DOMAIN-SUFFIX,openrouter.ai,AI服务
-  - DOMAIN-SUFFIX,openai.com,AI服务
-  - DOMAIN-SUFFIX,chat.com,AI服务
-  - DOMAIN-SUFFIX,chatgpt.com,AI服务
-  - DOMAIN-SUFFIX,sora.com,AI服务
-  - DOMAIN-SUFFIX,oaistatic.com,AI服务
-  - DOMAIN-SUFFIX,oaiusercontent.com,AI服务
-  - DOMAIN-SUFFIX,gemini.google.com,AI服务
-  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,AI服务
-  - DOMAIN-SUFFIX,notebooklm.google,AI服务
-  - DOMAIN-SUFFIX,notebooklm.google.com,AI服务
-  - DOMAIN-SUFFIX,cursor.com,AI服务
-  - DOMAIN-SUFFIX,cursor.sh,AI服务
-  - DOMAIN-SUFFIX,perplexity.ai,AI服务
-  - DOMAIN-SUFFIX,x.ai,AI服务
-  - DOMAIN-SUFFIX,mistral.ai,AI服务
-  - DOMAIN-SUFFIX,meta.ai,AI服务
-
-  # AI 平台后端 / Copilot / IDE：避免被 GitHub、Microsoft、Google 大类抢先命中
-  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,AI服务
-  - DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net,AI服务
-  - DOMAIN-SUFFIX,ai.google.dev,AI服务
-  - DOMAIN-SUFFIX,aistudio.google.com,AI服务
-  - DOMAIN-SUFFIX,makersuite.google.com,AI服务
-  - DOMAIN-SUFFIX,api.githubcopilot.com,AI服务
-  - DOMAIN-SUFFIX,copilot-proxy.githubusercontent.com,AI服务
-  - DOMAIN-SUFFIX,copilot.cloud.microsoft,AI服务
-  - DOMAIN-SUFFIX,copilot.microsoft.com,AI服务
-  - DOMAIN-SUFFIX,sydney.bing.com,AI服务
-  - DOMAIN-SUFFIX,ai.azure.com,AI服务
-  - DOMAIN-SUFFIX,api.groq.com,AI服务
-  - DOMAIN-SUFFIX,console.groq.com,AI服务
-  - DOMAIN-SUFFIX,api.together.xyz,AI服务
-  - DOMAIN-SUFFIX,grazie.ai,AI服务
-  - DOMAIN-SUFFIX,grazie.aws.intellij.net,AI服务
-  - DOMAIN-SUFFIX,jetbrains.ai,AI服务
-
-  # AI 风控 / 实验 / 登录辅助
+  - DOMAIN-SUFFIX,auth0.com,AI服务
   - DOMAIN-SUFFIX,client-api.arkoselabs.com,AI服务
   - DOMAIN-SUFFIX,events.statsigapi.net,AI服务
   - DOMAIN-SUFFIX,featuregates.org,AI服务
 
-  # AI 通用第三方依赖：如非 AI 网站异常，优先检查这里
-  - DOMAIN-SUFFIX,auth0.com,AI服务
-  - DOMAIN-SUFFIX,identrust.com,AI服务
-  - DOMAIN-SUFFIX,intercom.io,AI服务
-  - DOMAIN-SUFFIX,intercomcdn.com,AI服务
+  # AI 海外综合规则：MetaCubeX 维护，覆盖 OpenAI / Claude / Gemini / Copilot / Cursor 等
+  - RULE-SET,AI-Global,AI服务
 
   # OpenAI 官方规则兜底
   - RULE-SET,OpenAi,AI服务
