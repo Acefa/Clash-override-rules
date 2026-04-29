@@ -6,7 +6,7 @@ mixed-port: 7890
 allow-lan: false
 bind-address: "127.0.0.1"
 mode: rule
-ipv6: false
+ipv6: true
 unified-delay: true
 tcp-concurrent: true
 log-level: info
@@ -30,7 +30,7 @@ sniffer:
   sniff:
     HTTP:
       ports: [80, 8080-8090]
-      override-destination: true
+      override-destination: false
     TLS:
       ports: [443, 8443]
   skip-domain:
@@ -45,6 +45,8 @@ sniffer:
     - "+.alipayobjects.com"
     - "+.wechat.com"
     - "+.weixin.qq.com"
+    - "+.qq.com"
+    - "+.tencent.com"
     - "+.icbc.com.cn"
     - "+.ccb.com.cn"
     - "+.boc.cn"
@@ -678,7 +680,6 @@ rules:
   - DOMAIN-SUFFIX,aliyun.com,DIRECT
   - DOMAIN-SUFFIX,rjj.cc,DIRECT
   - DOMAIN-SUFFIX,newcli.com,DIRECT
-  - DOMAIN-SUFFIX,openrouter.ai,DIRECT
 
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
