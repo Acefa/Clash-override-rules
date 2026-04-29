@@ -51,6 +51,29 @@ sniffer:
     - "+.ccb.com.cn"
     - "+.boc.cn"
     - "+.abchina.com"
+    - "+.gov.cn"
+    - "+.edu.cn"
+    - "+.mi.com"
+    - "+.xiaomi.com"
+    - "+.huawei.com"
+    - "+.honor.com"
+    - "+.oppo.com"
+    - "+.vivo.com"
+    - "+.cmbchina.com"
+    - "+.cmbimg.com"
+    - "+.unionpay.com"
+    - "+.95516.com"
+    - "+.paypal.com"
+    - "+.icloud.com"
+    - "+.icloud-content.com"
+    - "+.me.com"
+    - "+.mzstatic.com"
+    - "+.lenovo.com"
+    - "+.samsung.com"
+    - "+.amap.com"
+    - "+.autonavi.com"
+    - "+.lan"
+    - "+.local"
   skip-dst-address:
     - 91.105.192.0/23
     - 91.108.4.0/22
@@ -150,40 +173,17 @@ dns:
     - https://120.53.53.53/dns-query
     - https://1.12.12.12/dns-query
 
-  # ========== 第四层：域名策略路由（精细化控制） ==========
+  # ========== 第四层：域名解析路由（按信任边界分层） ==========
   nameserver-policy:
-    # 国内服务：使用阿里/腾讯 DoH（加密+快速）
-    'geosite:cn':
-      - https://223.5.5.5/dns-query
-      - https://223.6.6.6/dns-query
+    # 国内服务使用国内 DoH，优先速度和 CDN 命中
+    'geosite:cn': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
 
-    # 火山引擎/字节服务
-    '+.volcengine.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
-    '+.volces.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
-    '+.bytedance.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
-
-    # AI 服务：国内 AI 用阿里，国外 AI 用加密 DNS
+    # 国内 AI / 云服务显式走国内 DoH，避免被海外策略误伤
     '+.deepseek.com': [https://223.5.5.5/dns-query, https://120.53.53.53/dns-query]
     '+.aliyuncs.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
     '+.aliyun.com': [https://223.5.5.5/dns-query, https://223.6.6.6/dns-query]
 
-    # 国外 AI 服务：使用 Cloudflare/Google DoH（加密防审查）
-    '+.openrouter.ai': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.openai.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.anthropic.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.claude.ai': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.chatgpt.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-
-    # 国外流媒体/服务：使用 Cloudflare/Google DoH
-    '+.youtube.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.googlevideo.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.google.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.gstatic.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.googleapis.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.github.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-    '+.githubusercontent.com': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
-
-    # GFW 列表和国外站点
+    # 海外服务统一使用可信海外 DoH，减少逐域名重复维护
     'geosite:geolocation-!cn': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
     'geosite:gfw': [https://1.1.1.1/dns-query, https://8.8.8.8/dns-query]
 
@@ -234,7 +234,7 @@ proxy-groups:
     strategy: round-robin
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Round_Robin.png
     include-all: true
-    url: "http://www.gstatic.com/generate_204"
+    url: "http://cp.cloudflare.com/generate_204"
     interval: 1800
     lazy: true
     expected-status: 204
@@ -242,17 +242,17 @@ proxy-groups:
   - name: 电报消息
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png
-    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
 
   - name: X平台
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Twitter.png
-    proxies: [节点选择, 自动选择, 负载均衡, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 美国节点, 日本节点, 狮城节点, 香港节点, 台湾节点, 韩国节点, 手动切换, DIRECT]
 
-  - name: OpenAi
+  - name: AI服务
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
-    proxies: [节点选择, 自动选择, 负载均衡, AI-UNHK, 狮城节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 香港节点, 手动切换, DIRECT]
+    proxies: [AI-UNHK, 手动切换, 节点选择, 自动选择]
 
   - name: AI-UNHK
     type: select
@@ -264,12 +264,12 @@ proxy-groups:
   - name: 油管视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/YouTube.png
-    proxies: [节点选择, 自动选择, 负载均衡, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 奈飞视频
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netflix.png
-    proxies: [节点选择, 自动选择, 负载均衡, 奈飞节点, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 奈飞节点, 狮城节点, 香港节点, 台湾节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 巴哈姆特
     type: select
@@ -284,7 +284,7 @@ proxy-groups:
   - name: 国外媒体
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ForeignMedia.png
-    proxies: [节点选择, 自动选择, 负载均衡, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
+    proxies: [节点选择, 自动选择, 香港节点, 台湾节点, 狮城节点, 日本节点, 美国节点, 韩国节点, 手动切换, DIRECT]
 
   - name: 国内媒体
     type: select
@@ -494,14 +494,6 @@ rule-providers:
     path: ./ruleset/SteamCN.list
     interval: 604800
 
-  AI-MIX:
-    type: http
-    behavior: classical
-    format: text
-    url: "https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/AI.list"
-    path: ./ruleset/AI.list
-    interval: 604800
-
   Microsoft:
     type: http
     behavior: domain
@@ -700,6 +692,62 @@ rules:
   - RULE-SET,LocalAreaNetwork,全球直连
   - RULE-SET,UnBan,全球直连
   
+  # AI 核心服务：强制走 AI服务，避免误直连和误分流
+  - DOMAIN-SUFFIX,anthropic.com,AI服务
+  - DOMAIN-SUFFIX,claude.ai,AI服务
+  - DOMAIN-SUFFIX,claude.com,AI服务
+  - DOMAIN-SUFFIX,claudeusercontent.com,AI服务
+  - DOMAIN-SUFFIX,openrouter.ai,AI服务
+  - DOMAIN-SUFFIX,openai.com,AI服务
+  - DOMAIN-SUFFIX,chat.com,AI服务
+  - DOMAIN-SUFFIX,chatgpt.com,AI服务
+  - DOMAIN-SUFFIX,sora.com,AI服务
+  - DOMAIN-SUFFIX,oaistatic.com,AI服务
+  - DOMAIN-SUFFIX,oaiusercontent.com,AI服务
+  - DOMAIN-SUFFIX,gemini.google.com,AI服务
+  - DOMAIN-SUFFIX,generativelanguage.googleapis.com,AI服务
+  - DOMAIN-SUFFIX,notebooklm.google,AI服务
+  - DOMAIN-SUFFIX,notebooklm.google.com,AI服务
+  - DOMAIN-SUFFIX,cursor.com,AI服务
+  - DOMAIN-SUFFIX,cursor.sh,AI服务
+  - DOMAIN-SUFFIX,perplexity.ai,AI服务
+  - DOMAIN-SUFFIX,x.ai,AI服务
+  - DOMAIN-SUFFIX,mistral.ai,AI服务
+  - DOMAIN-SUFFIX,meta.ai,AI服务
+
+  # AI 平台后端 / Copilot / IDE：避免被 GitHub、Microsoft、Google 大类抢先命中
+  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,AI服务
+  - DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net,AI服务
+  - DOMAIN-SUFFIX,ai.google.dev,AI服务
+  - DOMAIN-SUFFIX,aistudio.google.com,AI服务
+  - DOMAIN-SUFFIX,makersuite.google.com,AI服务
+  - DOMAIN-SUFFIX,api.githubcopilot.com,AI服务
+  - DOMAIN-SUFFIX,copilot-proxy.githubusercontent.com,AI服务
+  - DOMAIN-SUFFIX,copilot.cloud.microsoft,AI服务
+  - DOMAIN-SUFFIX,copilot.microsoft.com,AI服务
+  - DOMAIN-SUFFIX,sydney.bing.com,AI服务
+  - DOMAIN-SUFFIX,ai.azure.com,AI服务
+  - DOMAIN-SUFFIX,api.groq.com,AI服务
+  - DOMAIN-SUFFIX,console.groq.com,AI服务
+  - DOMAIN-SUFFIX,api.together.xyz,AI服务
+  - DOMAIN-SUFFIX,grazie.ai,AI服务
+  - DOMAIN-SUFFIX,grazie.aws.intellij.net,AI服务
+  - DOMAIN-SUFFIX,jetbrains.ai,AI服务
+
+  # AI 风控 / 实验 / 登录辅助
+  - DOMAIN-SUFFIX,client-api.arkoselabs.com,AI服务
+  - DOMAIN-SUFFIX,events.statsigapi.net,AI服务
+  - DOMAIN-SUFFIX,featuregates.org,AI服务
+
+  # AI 通用第三方依赖：如非 AI 网站异常，优先检查这里
+  - DOMAIN-SUFFIX,auth0.com,AI服务
+  - DOMAIN-SUFFIX,identrust.com,AI服务
+  - DOMAIN-SUFFIX,intercom.io,AI服务
+  - DOMAIN-SUFFIX,intercomcdn.com,AI服务
+
+  # OpenAI 官方规则兜底
+  - RULE-SET,OpenAi,AI服务
+
   - DOMAIN-SUFFIX,services.googleapis.cn,节点选择
   - RULE-SET,GoogleCNProxyIP,节点选择
   - RULE-SET,YouTube,油管视频
@@ -712,9 +760,6 @@ rules:
   - RULE-SET,Bilibili,哔哩哔哩
   - RULE-SET,ChinaMedia,国内媒体
   - RULE-SET,SteamCN,全球直连
-
-  - RULE-SET,AI-MIX,AI-UNHK
-  - RULE-SET,OpenAi,OpenAi
 
   - RULE-SET,Microsoft,微软服务
   - RULE-SET,Apple,苹果服务
