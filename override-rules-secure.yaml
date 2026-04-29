@@ -85,7 +85,7 @@ tun:
 dns:
   enable: true
   listen: 127.0.0.1:1053
-  ipv6: false
+  ipv6: true
 
   # 核心安全：DNS 请求遵循路由规则，防止泄漏
   respect-rules: true
