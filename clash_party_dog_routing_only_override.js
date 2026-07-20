@@ -1,5 +1,5 @@
 // Clash Party 2.0.0 JavaScript 覆写
-// 目标：仅使用目标文件的代理组、规则集和规则，订阅的 DNS、节点、TUN、嗅探及其他配置全部保持原样。
+// 目标：仅使用目标文件的代理组、规则集和规则；除移除内核已废弃字段外，订阅的 DNS、节点、TUN、嗅探及其他配置保持原样。
 // 来源 YAML SHA-256: 59EC50FC9760B8DB7DAD3DF381D4EAF4BEBDA7AB5EF472D65BCE9E92EE50EDB7
 // 生成日期：2026-07-20
 
@@ -492,14 +492,49 @@ const TARGET_CONFIG = {
       "path": "./ruleset/category-ai-cn.mrs",
       "interval": 86400,
       "format": "mrs"
+    },
+    "acl4ssr-ban-program-ad": {
+      "type": "http",
+      "behavior": "domain",
+      "url": "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/mrs/BanProgramAD_domain.mrs",
+      "path": "./ruleset/acl4ssr-ban-program-ad.mrs",
+      "interval": 86400,
+      "format": "mrs"
+    },
+    "acl4ssr-ban-ad": {
+      "type": "http",
+      "behavior": "domain",
+      "url": "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/mrs/BanAD_domain.mrs",
+      "path": "./ruleset/acl4ssr-ban-ad.mrs",
+      "interval": 86400,
+      "format": "mrs"
+    },
+    "acl4ssr-ban-easylist-china": {
+      "type": "http",
+      "behavior": "domain",
+      "url": "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/mrs/BanEasyListChina_domain.mrs",
+      "path": "./ruleset/acl4ssr-ban-easylist-china.mrs",
+      "interval": 86400,
+      "format": "mrs"
+    },
+    "linuxdo": {
+      "type": "http",
+      "behavior": "domain",
+      "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/linuxdo.mrs",
+      "path": "./ruleset/linuxdo.mrs",
+      "interval": 86400,
+      "format": "mrs"
     }
   },
   "rules": [
-    "DOMAIN-SUFFIX,zffdo.online,DIRECT",
     "RULE-SET,private,🏠 私有网络",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
-    "RULE-SET,category-ads-all,🛑 广告拦截",
     "RULE-SET,category-ai-cn,DIRECT",
+    "RULE-SET,acl4ssr-ban-program-ad,🍃 应用净化",
+    "RULE-SET,acl4ssr-ban-ad,🛑 广告拦截",
+    "RULE-SET,category-ads-all,🛑 广告拦截",
+    "RULE-SET,acl4ssr-ban-easylist-china,🆎 增强广告拦截",
+    "RULE-SET,linuxdo,💻 Linux.DO",
     "RULE-SET,google-gemini,✨ Gemini",
     "RULE-SET,openai,🤖 AI 服务",
     "RULE-SET,anthropic,🤖 AI 服务",
@@ -565,11 +600,15 @@ const TARGET_CONFIG = {
       "type": "select",
       "proxies": [
         "⚡ 自动选择",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
         "🔐 AnyTLS",
         "🌊 Hysteria2",
         "🛡️ Mieru",
@@ -584,11 +623,15 @@ const TARGET_CONFIG = {
       "name": "⚡ 自动选择",
       "type": "url-test",
       "proxies": [
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
         "🔐 AnyTLS",
         "🌊 Hysteria2",
         "🛡️ Mieru",
@@ -597,8 +640,465 @@ const TARGET_CONFIG = {
       "url": "https://www.gstatic.com/generate_204",
       "interval": 600,
       "lazy": true,
-      "include-all": false,
-      "tolerance": 50
+      "tolerance": 50,
+      "include-all": false
+    },
+    {
+      "name": "💻 Linux.DO",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT"
+      ]
+    },
+    {
+      "name": "🤖 AI 服务",
+      "type": "select",
+      "proxies": [
+        "🇺🇸 美国",
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "✨ Gemini",
+      "type": "select",
+      "proxies": [
+        "🇺🇸 美国",
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🎓 谷歌学术",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🔍 谷歌服务",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "📹 油管视频",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "📚 教育学术",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "📲 电报消息",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🐦 推特/X",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🎙️ Discord",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🐱 代码托管",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🛠️ 开发工具",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "☁️ 云服务",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "💾 网盘存储",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🎌 亚洲流媒体",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "💳 支付平台",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "₿ 加密货币",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "📰 新闻资讯",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🛒 海淘购物",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "🔞 成人内容",
+      "type": "select",
+      "proxies": [
+        "🚀 节点选择",
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
+        "DIRECT",
+        "REJECT"
+      ]
     },
     {
       "name": "🛑 广告拦截",
@@ -610,385 +1110,138 @@ const TARGET_CONFIG = {
       ]
     },
     {
-      "name": "🤖 AI 服务",
+      "name": "🍃 应用净化",
       "type": "select",
       "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
         "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+        "DIRECT"
+      ]
     },
     {
-      "name": "✨ Gemini",
+      "name": "🆎 增强广告拦截",
       "type": "select",
       "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
         "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+        "DIRECT"
+      ]
     },
     {
-      "name": "📹 油管视频",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🎓 谷歌学术",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🔍 谷歌服务",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "📚 教育学术",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "📲 电报消息",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🐦 推特/X",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🎙️ Discord",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🎌 亚洲流媒体",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🐱 代码托管",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🛠️ 开发工具",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "☁️ 云服务",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "💾 网盘存储",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "💳 支付平台",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "₿ 加密货币",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "📰 新闻资讯",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🛒 海淘购物",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🔞 成人内容",
-      "type": "select",
-      "proxies": [
-        "🚀 节点选择",
-        "⚡ 自动选择",
-        "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
-    },
-    {
-      "name": "🧩 US美国",
+      "name": "🚄 专线节点",
       "type": "url-test",
       "proxies": [],
+      "include-all": true,
+      "filter": "(?i)(专线|IPLC|IEPL|Premium)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 600,
       "lazy": true,
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "filter": "(?i)(🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b)",
       "tolerance": 50
     },
     {
-      "name": "🧩 HK香港",
+      "name": "🇭🇰 香港",
       "type": "url-test",
       "proxies": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
-      "lazy": true,
       "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "filter": "(?i)(🇭🇰|香港|Hong\\s*Kong|\\bHK\\b)",
-      "tolerance": 50
-    },
-    {
-      "name": "🧩 JP日本",
-      "type": "url-test",
-      "proxies": [],
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 600,
       "lazy": true,
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "filter": "(?i)(🇯🇵|日本|Tokyo|Osaka|\\bJP\\b)",
       "tolerance": 50
     },
     {
-      "name": "🧩 SG新加坡",
+      "name": "🇸🇬 新加坡",
       "type": "url-test",
       "proxies": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
-      "lazy": true,
       "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "filter": "(?i)(🇸🇬|新加坡|Singapore|\\bSG\\b)",
-      "tolerance": 50
-    },
-    {
-      "name": "🧩 其他",
-      "type": "url-test",
-      "proxies": [],
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 600,
       "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🇯🇵 日本",
+      "type": "url-test",
+      "proxies": [],
       "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群|🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b|🇭🇰|香港|Hong\\s*Kong|\\bHK\\b|🇯🇵|日本|Tokyo|Osaka|\\bJP\\b|🇸🇬|新加坡|Singapore|\\bSG\\b)",
+      "filter": "(?i)(🇯🇵|日本|Tokyo|Osaka|\\bJP\\b)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🇺🇸 美国",
+      "type": "url-test",
+      "proxies": [],
+      "include-all": true,
+      "filter": "(?i)(🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🇹🇼 台湾",
+      "type": "url-test",
+      "proxies": [],
+      "include-all": true,
+      "filter": "(?i)(🇹🇼|台湾|Taiwan|Taipei|\\bTW\\b)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🇰🇷 韩国",
+      "type": "url-test",
+      "proxies": [],
+      "include-all": true,
+      "filter": "(?i)(🇰🇷|韩国|Korea|Seoul|\\bKR\\b)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🇨🇦 加拿大",
+      "type": "url-test",
+      "proxies": [],
+      "include-all": true,
+      "filter": "(?i)(🇨🇦|加拿大|Canada|Toronto|Vancouver|\\bCA\\b)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🇩🇪 德国",
+      "type": "url-test",
+      "proxies": [],
+      "include-all": true,
+      "filter": "(?i)(🇩🇪|德国|Germany|Frankfurt|\\bDE\\b)",
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
+    },
+    {
+      "name": "🌐 其他地区",
+      "type": "url-test",
+      "proxies": [],
+      "include-all": true,
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群|🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b|🇭🇰|香港|Hong\\s*Kong|\\bHK\\b|🇯🇵|日本|Tokyo|Osaka|\\bJP\\b|🇸🇬|新加坡|Singapore|\\bSG\\b|🇹🇼|台湾|Taiwan|Taipei|\\bTW\\b|🇰🇷|韩国|Korea|Seoul|\\bKR\\b|🇨🇦|加拿大|Canada|Toronto|Vancouver|\\bCA\\b|🇩🇪|德国|Germany|Frankfurt|\\bDE\\b)",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": 600,
+      "lazy": true,
       "tolerance": 50
     },
     {
@@ -1028,33 +1281,27 @@ const TARGET_CONFIG = {
       "tolerance": 50
     },
     {
-      "name": "🚄 专线节点",
-      "type": "url-test",
-      "proxies": [],
-      "include-all": true,
-      "filter": "(?i)(专线|IPLC|IEPL|Premium)",
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
-      "lazy": true,
-      "tolerance": 50
-    },
-    {
       "name": "🏠 私有网络",
       "type": "select",
       "proxies": [
         "DIRECT",
         "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他",
         "🚀 节点选择",
-        "⚡ 自动选择"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点"
+      ]
     },
     {
       "name": "🔒 国内服务",
@@ -1062,16 +1309,22 @@ const TARGET_CONFIG = {
       "proxies": [
         "DIRECT",
         "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他",
         "🚀 节点选择",
-        "⚡ 自动选择"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+        "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点"
+      ]
     },
     {
       "name": "🌍 非中国",
@@ -1079,16 +1332,22 @@ const TARGET_CONFIG = {
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
         "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+        "REJECT"
+      ]
     },
     {
       "name": "🐟 漏网之鱼",
@@ -1096,16 +1355,22 @@ const TARGET_CONFIG = {
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
+        "🇺🇸 美国",
+        "🇭🇰 香港",
+        "🇯🇵 日本",
+        "🇸🇬 新加坡",
+        "🇹🇼 台湾",
+        "🇰🇷 韩国",
+        "🇨🇦 加拿大",
+        "🇩🇪 德国",
+        "🌐 其他地区",
+        "🔐 AnyTLS",
+        "🌊 Hysteria2",
+        "🛡️ Mieru",
+        "🚄 专线节点",
         "DIRECT",
-        "REJECT",
-        "🧩 US美国",
-        "🧩 HK香港",
-        "🧩 JP日本",
-        "🧩 SG新加坡",
-        "🧩 其他"
-      ],
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+        "REJECT"
+      ]
     }
   ]
 };
@@ -1135,6 +1400,8 @@ function main(config) {
   }
 
   const next = JSON.parse(JSON.stringify(config));
+  // Mihomo v1.19.29 已移除顶层全局指纹；节点自带的 client-fingerprint 保持不变。
+  delete next["global-client-fingerprint"];
   next["proxy-groups"] = JSON.parse(JSON.stringify(TARGET_CONFIG["proxy-groups"]));
   next["rule-providers"] = JSON.parse(JSON.stringify(TARGET_CONFIG["rule-providers"]));
   next.rules = JSON.parse(JSON.stringify(TARGET_CONFIG.rules));
