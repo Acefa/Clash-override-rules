@@ -527,6 +527,7 @@ const TARGET_CONFIG = {
     }
   },
   "rules": [
+    "DOMAIN-SUFFIX,zffdo.online,🚀 节点选择",
     "RULE-SET,private,🏠 私有网络",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
     "RULE-SET,category-ai-cn,DIRECT",
@@ -1133,7 +1134,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(专线|IPLC|IEPL|Premium)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1145,7 +1146,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇭🇰|香港|Hong\\s*Kong|\\bHK\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1157,7 +1158,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇸🇬|新加坡|Singapore|\\bSG\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1169,7 +1170,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇯🇵|日本|Tokyo|Osaka|\\bJP\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1181,7 +1182,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1193,7 +1194,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇹🇼|台湾|Taiwan|Taipei|\\bTW\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1205,7 +1206,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇰🇷|韩国|Korea|Seoul|\\bKR\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1217,7 +1218,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇨🇦|加拿大|Canada|Toronto|Vancouver|\\bCA\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1229,7 +1230,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(🇩🇪|德国|Germany|Frankfurt|\\bDE\\b)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1240,7 +1241,7 @@ const TARGET_CONFIG = {
       "include-all": true,
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群|🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b|🇭🇰|香港|Hong\\s*Kong|\\bHK\\b|🇯🇵|日本|Tokyo|Osaka|\\bJP\\b|🇸🇬|新加坡|Singapore|\\bSG\\b|🇹🇼|台湾|Taiwan|Taipei|\\bTW\\b|🇰🇷|韩国|Korea|Seoul|\\bKR\\b|🇨🇦|加拿大|Canada|Toronto|Vancouver|\\bCA\\b|🇩🇪|德国|Germany|Frankfurt|\\bDE\\b)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1252,7 +1253,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(AnyTLS)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1264,7 +1265,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(Hysteria2|\\(hy2\\))",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
@@ -1276,7 +1277,7 @@ const TARGET_CONFIG = {
       "filter": "(?i)(Mieru|\\(M\\)$)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 600,
+      "interval": 1200,
       "lazy": true,
       "tolerance": 50
     },
