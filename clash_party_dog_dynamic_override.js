@@ -495,6 +495,7 @@ const TARGET_CONFIG = {
     }
   },
   "rules": [
+    "DOMAIN-SUFFIX,zffdo.online,DIRECT",
     "RULE-SET,private,🏠 私有网络",
     "RULE-SET,private-ip,🏠 私有网络,no-resolve",
     "RULE-SET,category-ads-all,🛑 广告拦截",
