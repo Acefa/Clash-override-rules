@@ -594,10 +594,10 @@ const TARGET_CONFIG = {
         "🚄 专线节点"
       ],
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false,
-      "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)"
+      "interval": 600,
+      "lazy": true,
+      "include-all": false,
+      "tolerance": 50
     },
     {
       "name": "🛑 广告拦截",
@@ -936,54 +936,59 @@ const TARGET_CONFIG = {
       "type": "url-test",
       "proxies": [],
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false,
+      "interval": 600,
+      "lazy": true,
       "include-all": true,
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "filter": "(?i)(🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b)"
+      "filter": "(?i)(🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b)",
+      "tolerance": 50
     },
     {
       "name": "🧩 HK香港",
       "type": "url-test",
       "proxies": [],
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false,
+      "interval": 600,
+      "lazy": true,
       "include-all": true,
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "filter": "(?i)(🇭🇰|香港|Hong\\s*Kong|\\bHK\\b)"
+      "filter": "(?i)(🇭🇰|香港|Hong\\s*Kong|\\bHK\\b)",
+      "tolerance": 50
     },
     {
       "name": "🧩 JP日本",
       "type": "url-test",
       "proxies": [],
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false,
+      "interval": 600,
+      "lazy": true,
       "include-all": true,
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "filter": "(?i)(🇯🇵|日本|Tokyo|Osaka|\\bJP\\b)"
+      "filter": "(?i)(🇯🇵|日本|Tokyo|Osaka|\\bJP\\b)",
+      "tolerance": 50
     },
     {
       "name": "🧩 SG新加坡",
       "type": "url-test",
       "proxies": [],
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false,
+      "interval": 600,
+      "lazy": true,
       "include-all": true,
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
-      "filter": "(?i)(🇸🇬|新加坡|Singapore|\\bSG\\b)"
+      "filter": "(?i)(🇸🇬|新加坡|Singapore|\\bSG\\b)",
+      "tolerance": 50
     },
     {
       "name": "🧩 其他",
       "type": "url-test",
       "proxies": [],
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false,
+      "interval": 600,
+      "lazy": true,
       "include-all": true,
-      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群|🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b|🇭🇰|香港|Hong\\s*Kong|\\bHK\\b|🇯🇵|日本|Tokyo|Osaka|\\bJP\\b|🇸🇬|新加坡|Singapore|\\bSG\\b)"
+      "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群|🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b|🇭🇰|香港|Hong\\s*Kong|\\bHK\\b|🇯🇵|日本|Tokyo|Osaka|\\bJP\\b|🇸🇬|新加坡|Singapore|\\bSG\\b)",
+      "tolerance": 50
     },
     {
       "name": "🔐 AnyTLS",
@@ -993,8 +998,9 @@ const TARGET_CONFIG = {
       "filter": "(?i)(AnyTLS)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
     },
     {
       "name": "🌊 Hysteria2",
@@ -1004,8 +1010,9 @@ const TARGET_CONFIG = {
       "filter": "(?i)(Hysteria2|\\(hy2\\))",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
     },
     {
       "name": "🛡️ Mieru",
@@ -1015,8 +1022,9 @@ const TARGET_CONFIG = {
       "filter": "(?i)(Mieru|\\(M\\)$)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
     },
     {
       "name": "🚄 专线节点",
@@ -1026,8 +1034,9 @@ const TARGET_CONFIG = {
       "filter": "(?i)(专线|IPLC|IEPL|Premium)",
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群)",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": false
+      "interval": 600,
+      "lazy": true,
+      "tolerance": 50
     },
     {
       "name": "🏠 私有网络",
