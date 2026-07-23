@@ -599,6 +599,7 @@ const TARGET_CONFIG = {
     {
       "name": "🚀 节点选择",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png",
       "proxies": [
         "⚡ 自动选择",
         "🇺🇸 美国",
@@ -623,6 +624,7 @@ const TARGET_CONFIG = {
     {
       "name": "⚡ 自动选择",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png",
       "proxies": [
         "🇺🇸 美国",
         "🇭🇰 香港",
@@ -647,6 +649,7 @@ const TARGET_CONFIG = {
     {
       "name": "💻 Linux.DO",
       "type": "select",
+      "icon": "https://www.google.com/s2/favicons?sz=128&domain_url=https://linux.do",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -669,6 +672,7 @@ const TARGET_CONFIG = {
     {
       "name": "🤖 AI 服务",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png",
       "proxies": [
         "🇺🇸 美国",
         "🚀 节点选择",
@@ -691,6 +695,7 @@ const TARGET_CONFIG = {
     {
       "name": "✨ Gemini",
       "type": "select",
+      "icon": "https://www.google.com/s2/favicons?sz=128&domain_url=https://gemini.google.com",
       "proxies": [
         "🇺🇸 美国",
         "🚀 节点选择",
@@ -713,6 +718,7 @@ const TARGET_CONFIG = {
     {
       "name": "🎓 谷歌学术",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Scholar.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -736,6 +742,7 @@ const TARGET_CONFIG = {
     {
       "name": "🔍 谷歌服务",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -759,6 +766,7 @@ const TARGET_CONFIG = {
     {
       "name": "📹 油管视频",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -782,6 +790,7 @@ const TARGET_CONFIG = {
     {
       "name": "📚 教育学术",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bookpedia.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -805,6 +814,7 @@ const TARGET_CONFIG = {
     {
       "name": "📲 电报消息",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -828,6 +838,7 @@ const TARGET_CONFIG = {
     {
       "name": "🐦 推特/X",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/X.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -851,6 +862,7 @@ const TARGET_CONFIG = {
     {
       "name": "🎙️ Discord",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Discord.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -874,6 +886,7 @@ const TARGET_CONFIG = {
     {
       "name": "🐱 代码托管",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -897,6 +910,7 @@ const TARGET_CONFIG = {
     {
       "name": "🛠️ 开发工具",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Drill.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -920,6 +934,7 @@ const TARGET_CONFIG = {
     {
       "name": "☁️ 云服务",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Server.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -943,6 +958,7 @@ const TARGET_CONFIG = {
     {
       "name": "💾 网盘存储",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Drive.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -966,6 +982,7 @@ const TARGET_CONFIG = {
     {
       "name": "🎌 亚洲流媒体",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Asia_Map.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -989,6 +1006,7 @@ const TARGET_CONFIG = {
     {
       "name": "💳 支付平台",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/PayPal.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -1012,6 +1030,7 @@ const TARGET_CONFIG = {
     {
       "name": "₿ 加密货币",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cryptocurrency.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -1035,6 +1054,7 @@ const TARGET_CONFIG = {
     {
       "name": "📰 新闻资讯",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple_News.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -1058,6 +1078,7 @@ const TARGET_CONFIG = {
     {
       "name": "🛒 海淘购物",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Amazon.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -1081,6 +1102,7 @@ const TARGET_CONFIG = {
     {
       "name": "🔞 成人内容",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Pornhub.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -1104,6 +1126,7 @@ const TARGET_CONFIG = {
     {
       "name": "🛑 广告拦截",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AdBlack.png",
       "proxies": [
         "REJECT",
         "DIRECT",
@@ -1113,6 +1136,7 @@ const TARGET_CONFIG = {
     {
       "name": "🍃 应用净化",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hijacking.png",
       "proxies": [
         "REJECT",
         "DIRECT"
@@ -1121,6 +1145,7 @@ const TARGET_CONFIG = {
     {
       "name": "🆎 增强广告拦截",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png",
       "proxies": [
         "REJECT",
         "DIRECT"
@@ -1129,6 +1154,7 @@ const TARGET_CONFIG = {
     {
       "name": "🚄 专线节点",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/IEPL.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(专线|IPLC|IEPL|Premium)",
@@ -1141,6 +1167,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇭🇰 香港",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇭🇰|香港|Hong\\s*Kong|\\bHK\\b)",
@@ -1153,6 +1180,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇸🇬 新加坡",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇸🇬|新加坡|Singapore|\\bSG\\b)",
@@ -1165,6 +1193,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇯🇵 日本",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇯🇵|日本|Tokyo|Osaka|\\bJP\\b)",
@@ -1177,6 +1206,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇺🇸 美国",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b)",
@@ -1189,6 +1219,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇹🇼 台湾",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇹🇼|台湾|Taiwan|Taipei|\\bTW\\b)",
@@ -1201,6 +1232,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇰🇷 韩国",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Korea.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇰🇷|韩国|Korea|Seoul|\\bKR\\b)",
@@ -1213,6 +1245,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇨🇦 加拿大",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Canada.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇨🇦|加拿大|Canada|Toronto|Vancouver|\\bCA\\b)",
@@ -1225,6 +1258,7 @@ const TARGET_CONFIG = {
     {
       "name": "🇩🇪 德国",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Germany.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(🇩🇪|德国|Germany|Frankfurt|\\bDE\\b)",
@@ -1237,6 +1271,7 @@ const TARGET_CONFIG = {
     {
       "name": "🌐 其他地区",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/World_Map.png",
       "proxies": [],
       "include-all": true,
       "exclude-filter": "(?i)(剩余|流量|套餐|到期|过期|官网|网址|客服|重置|订阅|公告|通知|Traffic|Expire|Reset|Official|Website|QQ群|TG群|官方群|交流群|🇺🇸|美国|United\\s*States|Los\\s*Angeles|San\\s*Jose|San\\s*Francisco|Seattle|Washington|Las\\s*Vegas|\\bUS\\b|🇭🇰|香港|Hong\\s*Kong|\\bHK\\b|🇯🇵|日本|Tokyo|Osaka|\\bJP\\b|🇸🇬|新加坡|Singapore|\\bSG\\b|🇹🇼|台湾|Taiwan|Taipei|\\bTW\\b|🇰🇷|韩国|Korea|Seoul|\\bKR\\b|🇨🇦|加拿大|Canada|Toronto|Vancouver|\\bCA\\b|🇩🇪|德国|Germany|Frankfurt|\\bDE\\b)",
@@ -1248,6 +1283,7 @@ const TARGET_CONFIG = {
     {
       "name": "🔐 AnyTLS",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/SSL.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(AnyTLS)",
@@ -1260,6 +1296,7 @@ const TARGET_CONFIG = {
     {
       "name": "🌊 Hysteria2",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Rocket.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(Hysteria2|\\(hy2\\))",
@@ -1272,6 +1309,7 @@ const TARGET_CONFIG = {
     {
       "name": "🛡️ Mieru",
       "type": "url-test",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Lock.png",
       "proxies": [],
       "include-all": true,
       "filter": "(?i)(Mieru|\\(M\\)$)",
@@ -1284,6 +1322,7 @@ const TARGET_CONFIG = {
     {
       "name": "🏠 私有网络",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/WiFi.png",
       "proxies": [
         "DIRECT",
         "REJECT",
@@ -1307,6 +1346,7 @@ const TARGET_CONFIG = {
     {
       "name": "🔒 国内服务",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Domestic.png",
       "proxies": [
         "DIRECT",
         "REJECT",
@@ -1330,6 +1370,7 @@ const TARGET_CONFIG = {
     {
       "name": "🌍 非中国",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
@@ -1353,6 +1394,7 @@ const TARGET_CONFIG = {
     {
       "name": "🐟 漏网之鱼",
       "type": "select",
+      "icon": "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final.png",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
