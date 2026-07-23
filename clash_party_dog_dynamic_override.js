@@ -647,6 +647,8 @@ const TARGET_CONFIG = {
     {
       "name": "💻 Linux.DO",
       "type": "select",
+      "include-all": true,
+      "filter": "(?i)^🇭🇰[13]香港-专线\\(AnyTLS\\)$",
       "proxies": [
         "🚀 节点选择",
         "⚡ 自动选择",
