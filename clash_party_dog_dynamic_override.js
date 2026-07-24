@@ -1499,8 +1499,12 @@ function main(config) {
   const next = JSON.parse(JSON.stringify(config));
   // Mihomo v1.19.29 已移除顶层全局指纹；节点自带的 client-fingerprint 保持不变。
   delete next["global-client-fingerprint"];
+  next.ipv6 = false;
   if (isPlainObject(next.dns)) {
     next.dns = optimizeDnsConfig(next.dns);
+  }
+  if (isPlainObject(next.dns)) {
+    next.dns.ipv6 = false;
   }
   next["proxy-groups"] = JSON.parse(JSON.stringify(TARGET_CONFIG["proxy-groups"]));
   next["rule-providers"] = JSON.parse(JSON.stringify(TARGET_CONFIG["rule-providers"]));
